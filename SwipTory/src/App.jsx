@@ -18,7 +18,7 @@ function App() {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.post(
-          "https://feedback-d89u.onrender.com/verify-token",
+          "https://swiptory.onrender.com/verify-token",
           {},
           {
             headers: {

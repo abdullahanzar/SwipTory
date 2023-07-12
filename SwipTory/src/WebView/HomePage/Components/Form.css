@@ -1,0 +1,61 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.form form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.form form p:first-of-type {
+  position: relative;
+  bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form form div label {
+  padding-right: 60px;
+  font-weight: 600;
+}
+
+.form form div input {
+  padding: 0.2rem;
+  background: #fff;
+  border: 1px solid black;
+  width: 12rem;
+}
+
+.form form div input:focus {
+  padding: 0.3rem;
+  font-size: 1rem;
+}
+
+.form form button {
+  border-radius: 20px;
+  background: #73abff;
+  border: none;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.95rem;
+  position: relative;
+  top: 0.5rem;
+}
+
+.form form button:hover {
+    cursor: pointer;
+    color: #000;
+    background: #e8f1ff;
+    border: 1px solid #73abff;
+}
+
+.form .response {
+    color: red;
+}
