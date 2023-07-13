@@ -21,17 +21,20 @@ export default function AddStory() {
       });
   }, [tempState]);
   const handleFormSubmit = () => {
-    Object.values(slideData).map(async (item) => {
-      item["storyID"] = 0;
+    Object.values(slideData).map(async (item, key) => {
+      item["storyID"] = 4;
       console.log(item);
       try{
-      const response = await axios.post("https://swiptory.onrender.com/story", item, {
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          "token": localStorage.getItem('token')
-        },
-      });
-      console.log(response)
+        console.log(key)
+        setTimeout(async () => {
+          const response = await axios.post("https://swiptory.onrender.com/story", item, {
+            headers: {
+              "content-type": "application/x-www-form-urlencoded",
+              "token": localStorage.getItem('token')
+            },
+          });
+          console.log(response)
+        }, 700*key);
     } catch(e) {
       console.log(e)
     }

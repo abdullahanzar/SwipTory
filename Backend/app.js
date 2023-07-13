@@ -388,6 +388,24 @@ app.post("/verify-token", isAuthenticated, (req, res) => {
   res.send("Token Valid");
 });
 
+app.get("/storyid", async (req, res) => {
+    try {
+      let response = await swipToryStory.find().sort({ _id: -1 }).limit(1);
+      if(!response[0]) {
+        response = {
+          storyID: 0
+        }
+        return res.json(response);
+      }
+      response = {
+        storyID: response[0].storyID + 1
+      }
+      res.send(response)
+    } catch(e) {
+      console.log(e)
+    }
+}, [])
+
 app.use("/", (req, res) => {
   res.status(404);
   res.json({
