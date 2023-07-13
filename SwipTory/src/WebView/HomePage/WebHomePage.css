@@ -18,9 +18,10 @@
 }
 
 .addstorymodal {
-  min-width: 52%;
+  min-width: 42%;
   width: fit-content;
-  height: 55%;
+  min-height: 55%;
+  height: fit-content;
   position: relative;
   top: 50%;
   left: 50%;

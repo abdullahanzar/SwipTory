@@ -69,11 +69,11 @@
 .changeslidesection {
   position: relative;
   inset: 3rem;
-  width: 70%;
+  width: 87%;
 }
 
 .changeslidesection button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
   margin: 0.5rem;
   border-radius: 20px;
   border: none;
@@ -104,7 +104,7 @@
   height: 10px;
   animation: spin 2s linear infinite;
   position: absolute;
-  left: 80%;
+  left: 77%;
   top: 35%;
 }
 
@@ -120,7 +120,7 @@
 .error {
   width: fit-content;
   position: absolute;
-  left: 40%;
+  left: 45%;
   top: 30%;
   color: red;
 }
