@@ -55,13 +55,43 @@
   padding: 0.3rem;
 }
 
-.mainform form textarea{
+.mainform form textarea {
   height: 5rem;
   width: 20rem;
   padding: 0.3rem;
 }
 
 .mainform form select {
-    width: 20.9rem;
-    padding: 0.3rem;
+  width: 20.9rem;
+  padding: 0.3rem;
+}
+
+.changeslidesection {
+  position: relative;
+  inset: 3rem;
+  width: 70%;
+}
+
+.changeslidesection button {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.changeslidesection button:first-of-type {
+  background: #7eff73;
+}
+
+.changeslidesection button:nth-of-type(2) {
+  background: #73abff;
+}
+
+.changeslidesection button:nth-of-type(3) {
+  background: #FF7373;
+  position: relative;
+  float: right;
 }

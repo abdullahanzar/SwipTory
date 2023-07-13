@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./AddStory.css";
+import axios from "axios";
 
 export default function AddStory() {
   let [count, setCount] = useState(1);
@@ -11,16 +12,31 @@ export default function AddStory() {
     setSlides([...slides, { number: count }]);
   }, [count]);
   useEffect(() => {
-    setSlideData({
-      ...slideData,
-      [selectedSlide]: {
-        ...tempState,
-      },
-    });
+    if (tempState.slide == selectedSlide)
+      setSlideData({
+        ...slideData,
+        [selectedSlide]: {
+          ...tempState,
+        },
+      });
   }, [tempState]);
-  useEffect(() => {
-    console.log(slideData);
-  }, [slideData]);
+  const handleFormSubmit = () => {
+    Object.values(slideData).map(async (item) => {
+      item["storyID"] = 0;
+      console.log(item);
+      try{
+      const response = await axios.post("https://swiptory.onrender.com/story", item, {
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          "token": localStorage.getItem('token')
+        },
+      });
+      console.log(response)
+    } catch(e) {
+      console.log(e)
+    }
+    });
+  };
   return (
     <div className="addstory">
       <div className="header">
@@ -56,6 +72,7 @@ export default function AddStory() {
                     onChange={(e) => {
                       setTempState({
                         ...tempState,
+                        slide: item.number,
                         [e.target.name]: e.target.value,
                       });
                     }}
@@ -68,6 +85,7 @@ export default function AddStory() {
                         id="heading"
                         placeholder="Your Heading"
                         value={slideData[selectedSlide]?.heading || ""}
+                        onChange={() => {}}
                         required
                       />
                     </div>
@@ -78,17 +96,19 @@ export default function AddStory() {
                         id="description"
                         placeholder="Story Description"
                         value={slideData[selectedSlide]?.description || ""}
+                        onChange={() => {}}
                         required
                       ></textarea>
                     </div>
                     <div>
-                      <label htmlFor="image">Image:</label>
+                      <label htmlFor="imageURL">imageURL:</label>
                       <input
                         type="text"
-                        name="image"
-                        id="image"
-                        placeholder="Add Image URL"
-                        value={slideData[selectedSlide]?.image || ""}
+                        name="imageURL"
+                        id="imageURL"
+                        placeholder="Add image URL"
+                        value={slideData[selectedSlide]?.imageURL || ""}
+                        onChange={() => {}}
                         required
                       />
                     </div>
@@ -97,6 +117,7 @@ export default function AddStory() {
                       <select
                         name="category"
                         id="category"
+                        onChange={() => {}}
                         required
                         value={slideData[selectedSlide]?.category || ""}
                       >
@@ -115,6 +136,23 @@ export default function AddStory() {
               </div>
             );
         })}
+      </div>
+      <div className="changeslidesection">
+        <button
+          onClick={() => {
+            if (selectedSlide != 1) setSelectedSlide(selectedSlide - 1);
+          }}
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => {
+            if (selectedSlide != 5) setSelectedSlide(selectedSlide + 1);
+          }}
+        >
+          Next
+        </button>
+        <button onClick={handleFormSubmit}>Post</button>
       </div>
     </div>
   );
