@@ -47,7 +47,7 @@ export default function WebHomePage() {
         overlayClassName={"modalOverlay"}
         className={"addstorymodal"}
       >
-        <AddStory />
+        <AddStory closeStory={setAddStory}/>
       </ReactModal>
     </div>
   );

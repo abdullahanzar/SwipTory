@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import "./AddStory.css";
 import axios from "axios";
 
-export default function AddStory() {
+export default function AddStory(props) {
   let [count, setCount] = useState(1);
   const [slides, setSlides] = useState([]);
   const [selectedSlide, setSelectedSlide] = useState(1);
   const [slideData, setSlideData] = useState({});
   const [tempState, setTempState] = useState({});
+  const [status, setStatus] = useState([]);
+  const doClose = (key) => {
+    if (key + 1 === count) props.closeStory(false);
+  };
   useEffect(() => {
     setSlides([...slides, { number: count }]);
   }, [count]);
@@ -21,12 +25,11 @@ export default function AddStory() {
       });
   }, [tempState]);
   const handleFormSubmit = async () => {
-    const storyID = await getStoryID()
+    const storyID = await getStoryID();
+    setStatus(["true"]);
     Object.values(slideData).map(async (item, key) => {
       item["storyID"] = storyID;
-      console.log(item.storyID);
       try {
-        console.log(key);
         setTimeout(async () => {
           const response = await axios.post(
             "https://swiptory.onrender.com/story",
@@ -38,12 +41,16 @@ export default function AddStory() {
               },
             }
           );
-          console.log(response);
+          if (response.data.error) {
+            setStatus(["error"]);
+            console.log(response.data.error);
+          } else doClose(key);
         }, 700 * key);
       } catch (e) {
         console.log(e);
       }
     });
+    if (Object.keys(slideData).length === 0) setStatus(["error"]);
   };
   return (
     <div className="addstory">
@@ -160,6 +167,10 @@ export default function AddStory() {
         >
           Next
         </button>
+        {status[0] === "true" && <div className="loader"></div>}
+        {status[0] === "error" && (
+          <div className="error">Your form is incomplete.</div>
+        )}
         <button onClick={handleFormSubmit}>Post</button>
       </div>
     </div>
@@ -169,7 +180,6 @@ export default function AddStory() {
 async function getStoryID() {
   try {
     let id = await axios.get("https://swiptory.onrender.com/storyid");
-    console.log(id);
     return id.data.storyID;
   } catch (e) {
     console.log(e);
