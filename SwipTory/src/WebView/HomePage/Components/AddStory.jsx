@@ -20,24 +20,29 @@ export default function AddStory() {
         },
       });
   }, [tempState]);
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
+    const storyID = await getStoryID()
     Object.values(slideData).map(async (item, key) => {
-      item["storyID"] = 4;
-      console.log(item);
-      try{
-        console.log(key)
+      item["storyID"] = storyID;
+      console.log(item.storyID);
+      try {
+        console.log(key);
         setTimeout(async () => {
-          const response = await axios.post("https://swiptory.onrender.com/story", item, {
-            headers: {
-              "content-type": "application/x-www-form-urlencoded",
-              "token": localStorage.getItem('token')
-            },
-          });
-          console.log(response)
-        }, 700*key);
-    } catch(e) {
-      console.log(e)
-    }
+          const response = await axios.post(
+            "https://swiptory.onrender.com/story",
+            item,
+            {
+              headers: {
+                "content-type": "application/x-www-form-urlencoded",
+                token: localStorage.getItem("token"),
+              },
+            }
+          );
+          console.log(response);
+        }, 700 * key);
+      } catch (e) {
+        console.log(e);
+      }
     });
   };
   return (
@@ -150,7 +155,7 @@ export default function AddStory() {
         </button>
         <button
           onClick={() => {
-            if (selectedSlide != 5) setSelectedSlide(selectedSlide + 1);
+            if (selectedSlide < 6) setSelectedSlide(selectedSlide + 1);
           }}
         >
           Next
@@ -159,4 +164,14 @@ export default function AddStory() {
       </div>
     </div>
   );
+}
+
+async function getStoryID() {
+  try {
+    let id = await axios.get("https://swiptory.onrender.com/storyid");
+    console.log(id);
+    return id.data.storyID;
+  } catch (e) {
+    console.log(e);
+  }
 }
