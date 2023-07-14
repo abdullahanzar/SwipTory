@@ -10,12 +10,14 @@ export default function StoriesSection(props) {
       setStories(await getSelectedStories(props.selectedCategory)))();
   }, []);
   useEffect(() => {
-    console.log(showMore);
-  }, [showMore]);
+    (async () =>
+      setStories(await getSelectedStories(props.selectedCategory)))();
+  }, [props.selectedCategory]);
   return (
     <div className="storiessection">
       {props.selectedCategory == "all" &&
         showAllStories(stories, props.categories, setShowMore, showMore)}
+      {props.selectedCategory !== "all" && showCategoryStories(stories, props.selectedCategory)}
     </div>
   );
 }
@@ -29,6 +31,7 @@ async function getSelectedStories(category) {
       response = await axios.get(
         `https://swiptory.onrender.com/story/all?category=${category}`
       );
+    console.log(response);
     return response.data;
   } catch (e) {
     console.log(e);
@@ -44,14 +47,17 @@ function showAllStories(stories, categories, setShowMore, showMore) {
       uniqueStories.push(obj);
     }
   }
-  console.log(uniqueStories);
   return categories.map((item, key) => {
     if (key !== 0)
       return (
         <div className="storybycategory" key={key}>
           <p>Top stories about {item[0]}</p>
           <div
-            className={(showMore==item[0]) ? "categorystoriesShowMore" : "categorystories"}
+            className={
+              showMore == item[0]
+                ? "categorystoriesShowMore"
+                : "categorystories"
+            }
           >
             {uniqueStories?.map((story, key) => {
               if (story.category == item[0])
@@ -64,6 +70,7 @@ function showAllStories(stories, categories, setShowMore, showMore) {
                         {story.description}
                       </span>
                     </p>
+                    <img src={story.imageURL} />
                   </div>
                 );
             })}
@@ -92,4 +99,30 @@ function showAllStories(stories, categories, setShowMore, showMore) {
       </div>
     );
   });
+}
+
+function showCategoryStories(stories, category) {
+ return (
+    <div className="storybycategory">
+        <p>Top stories about {category}</p>
+        <div className="categorystoriesShowMore">
+        {   
+            stories.map((story, key)=>(
+                <div className="story" key={key}>
+                    <p>
+                      {story.heading}
+                      <br />
+                      <span className="storydescription">
+                        {story.description}
+                      </span>
+                    </p>
+                    <img src={story.imageURL} />
+                  </div>
+            ))
+            
+        }
+        </div>
+    </div>
+ )   
+
 }

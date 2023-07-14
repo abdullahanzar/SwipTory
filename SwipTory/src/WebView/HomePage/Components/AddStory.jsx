@@ -33,7 +33,6 @@ export default function AddStory(props) {
     Object.values(slideData).map(async (item, key) => {
       item["storyID"] = storyID;
       item["createdByUser"] = localStorage.getItem("user");
-      console.log(item)
       try {
         setTimeout(async () => {
           const response = await axios.post(
