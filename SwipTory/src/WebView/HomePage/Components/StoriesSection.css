@@ -31,6 +31,7 @@
   position: relative;
   flex-basis: 12rem;
   min-width: 12rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 }
 
 .story p {
