@@ -289,7 +289,7 @@ app.get("/user/story/:username", async(req, res)=>{
     if(!username) {
       return res.json({error: "Not provided with the username params."})
     }
-    const found = await swipToryStory.find({createdByUser: username});
+    const found = await swipToryStory.find({createdByUser: username}).sort({ _id: -1 });
     if(!found[0]) {
       return res.json({error: "This user hasn't created any stories yet."})
     }

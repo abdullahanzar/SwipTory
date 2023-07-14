@@ -6,6 +6,7 @@ import axios from "axios";
 export default function StoriesSection(props) {
   const [stories, setStories] = useState([]);
   const [showMore, setShowMore] = useState(false);
+  const [userStories, setUserStories] = useState([]);
   const { isLoggedIn } = useContext(SwipToryContext);
   useEffect(() => {
     (async () =>
@@ -15,9 +16,20 @@ export default function StoriesSection(props) {
     (async () =>
       setStories(await getSelectedStories(props.selectedCategory)))();
   }, [props.selectedCategory]);
+  useEffect(() => {
+    (async () => {
+      const user = localStorage.getItem("user");
+      let stories = await axios.get(
+        `https://swiptory.onrender.com/user/story/${user}`
+      );
+      stories = stories.data;
+      console.log(stories);
+      setUserStories(stories);
+    })();
+  }, [isLoggedIn]);
   return (
     <div className="storiessection">
-      {isLoggedIn && showUserStories()}
+      {isLoggedIn && showUserStories(userStories)}
       {props.selectedCategory == "all" &&
         showAllStories(stories, props.categories, setShowMore, showMore)}
       {props.selectedCategory !== "all" &&
@@ -124,12 +136,38 @@ function showCategoryStories(stories, category) {
   );
 }
 
-function showUserStories() {
-    let stories;
-    (async()=>{stories=await getSelectedStories()})()
+function showUserStories(stories) {
+  if (!stories.error)
     return (
-        <div>
-            <p>Your Stories</p>
+      <div className="storybycategory">
+        <p>Your Stories</p>
+        <div className="categorystoriesShowMore">
+          {stories.map((story, key) => (
+            <div className="story" key={key}>
+              <p>
+                {story.heading}
+                <br />
+                <span className="storydescription">{story.description}</span>
+              </p>
+              <img src={story.imageURL} />
+            </div>
+          ))}
+        </div>
+        {stories?.length > 6 && (
+          <button
+            onClick={() => {
+              if (showMore == false) setShowMore(item[0]);
+              else setShowMore(false);
+            }}
+          >
+            See More
+          </button>
+        )}
+      </div>
+    );
+    return (
+        <div className="storybycategory">
+        <p>Please create stories to view your stories.</p>
         </div>
     )
 }
