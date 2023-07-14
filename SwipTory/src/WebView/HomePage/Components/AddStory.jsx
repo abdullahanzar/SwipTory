@@ -162,7 +162,7 @@ export default function AddStory(props) {
         </button>
         <button
           onClick={() => {
-            if (selectedSlide < 6) setSelectedSlide(selectedSlide + 1);
+            if (selectedSlide < count) setSelectedSlide(selectedSlide + 1);
           }}
         >
           Next

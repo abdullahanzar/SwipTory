@@ -4,6 +4,7 @@ import ReactModal from "react-modal";
 import "./WebHomePage.css";
 import Form from "./Components/Form";
 import AddStory from "./Components/AddStory";
+import Categories from "./Components/Categories";
 ReactModal.setAppElement("#root");
 
 export default function WebHomePage() {
@@ -49,6 +50,7 @@ export default function WebHomePage() {
       >
         <AddStory closeStory={setAddStory}/>
       </ReactModal>
+      <Categories />
     </div>
   );
 }
