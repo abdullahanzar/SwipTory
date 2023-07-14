@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./StoriesSection.css";
+import { SwipToryContext } from "../../../SwipToryContext";
 import axios from "axios";
 
 export default function StoriesSection(props) {
   const [stories, setStories] = useState([]);
   const [showMore, setShowMore] = useState(false);
+  const { isLoggedIn } = useContext(SwipToryContext);
   useEffect(() => {
     (async () =>
       setStories(await getSelectedStories(props.selectedCategory)))();
@@ -15,9 +17,11 @@ export default function StoriesSection(props) {
   }, [props.selectedCategory]);
   return (
     <div className="storiessection">
+      {isLoggedIn && showUserStories()}
       {props.selectedCategory == "all" &&
         showAllStories(stories, props.categories, setShowMore, showMore)}
-      {props.selectedCategory !== "all" && showCategoryStories(stories, props.selectedCategory)}
+      {props.selectedCategory !== "all" &&
+        showCategoryStories(stories, props.selectedCategory)}
     </div>
   );
 }
@@ -31,7 +35,6 @@ async function getSelectedStories(category) {
       response = await axios.get(
         `https://swiptory.onrender.com/story/all?category=${category}`
       );
-    console.log(response);
     return response.data;
   } catch (e) {
     console.log(e);
@@ -102,27 +105,31 @@ function showAllStories(stories, categories, setShowMore, showMore) {
 }
 
 function showCategoryStories(stories, category) {
- return (
+  return (
     <div className="storybycategory">
-        <p>Top stories about {category}</p>
-        <div className="categorystoriesShowMore">
-        {   
-            stories.map((story, key)=>(
-                <div className="story" key={key}>
-                    <p>
-                      {story.heading}
-                      <br />
-                      <span className="storydescription">
-                        {story.description}
-                      </span>
-                    </p>
-                    <img src={story.imageURL} />
-                  </div>
-            ))
-            
-        }
-        </div>
+      <p>Top stories about {category}</p>
+      <div className="categorystoriesShowMore">
+        {stories.map((story, key) => (
+          <div className="story" key={key}>
+            <p>
+              {story.heading}
+              <br />
+              <span className="storydescription">{story.description}</span>
+            </p>
+            <img src={story.imageURL} />
+          </div>
+        ))}
+      </div>
     </div>
- )   
+  );
+}
 
+function showUserStories() {
+    let stories;
+    (async()=>{stories=await getSelectedStories()})()
+    return (
+        <div>
+            <p>Your Stories</p>
+        </div>
+    )
 }

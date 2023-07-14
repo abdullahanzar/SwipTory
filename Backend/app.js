@@ -283,6 +283,23 @@ app.get("/story/:storyID", async (req, res) => {
   }
 });
 
+app.get("/user/story/:username", async(req, res)=>{
+  try {
+    const username = req.params.username;
+    if(!username) {
+      return res.json({error: "Not provided with the username params."})
+    }
+    const found = await swipToryStory.find({createdByUser: username});
+    if(!found[0]) {
+      return res.json({error: "This user hasn't created any stories yet."})
+    }
+    return res.json(found)
+  } 
+  catch (e) {
+    console.log(e)
+  }
+})
+
 app.post("/like", isAuthenticated, async (req, res) => {
   try {
     const storyID = req.body.storyID;
