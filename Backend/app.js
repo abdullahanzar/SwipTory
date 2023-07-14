@@ -50,6 +50,7 @@ const swipToryStorySchema = new mongoose.Schema({
     min: [0, "Iteration cannot be less than 0"],
     max: [5, "Iteration cannot be more than 5"],
   },
+  createdByUser: String,
 });
 
 const swipToryUser = mongoose.model("SwipTory-User", {
@@ -266,11 +267,11 @@ app.get("/story/:storyID", async (req, res) => {
     const storyID = req.params.storyID;
     const category = req.query.category;
     if (category) {
-      const found = await swipToryStory.find({ category });
+      const found = await swipToryStory.find({ category }).sort({ _id: -1 });
       return res.json(found);
     }
     if (storyID == "all") {
-      const found = await swipToryStory.find();
+      const found = await swipToryStory.find().sort({ _id: -1 });
       return res.json(found);
     }
     const found = await swipToryStory.find({ storyID });

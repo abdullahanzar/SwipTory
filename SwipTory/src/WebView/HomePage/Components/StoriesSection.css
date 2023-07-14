@@ -7,17 +7,17 @@
 }
 
 .storybycategory {
-    width: 100%;
-    height: fit-content;
+  width: 100%;
+  height: fit-content;
 }
 
-.storybycategory>p:first-of-type {
-    width: fit-content;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    font-size: 1.5rem;
-    font-weight: 600;
+.storybycategory > p:first-of-type {
+  width: fit-content;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .story {
@@ -29,24 +29,46 @@
   border-radius: 12px;
   cursor: pointer;
   position: relative;
+  flex-basis: 12rem;
+  min-width: 12rem;
 }
 
 .story p {
-    position: absolute;
-    bottom: 0;
-    font-weight: 600;
-    font-size: 19px;
-    padding: 0.25rem;
+  position: absolute;
+  bottom: 0;
+  font-weight: 600;
+  font-size: 19px;
+  padding: 0.25rem;
 }
 
 .story .storydescription {
-    font-weight: 100;
-    font-size: 15px;
-    font-family: DM Sans;
+  font-weight: 100;
+  font-size: 15px;
+  font-family: DM Sans;
 }
 
 .categorystories {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.categorystoriesShowMore {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.storybycategory button {
+  border-radius: 20px;
+  background: #ff7373;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: #fff;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  cursor: pointer;
 }

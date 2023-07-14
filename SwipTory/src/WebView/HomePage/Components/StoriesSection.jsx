@@ -4,17 +4,18 @@ import axios from "axios";
 
 export default function StoriesSection(props) {
   const [stories, setStories] = useState([]);
+  const [showMore, setShowMore] = useState(false);
   useEffect(() => {
     (async () =>
       setStories(await getSelectedStories(props.selectedCategory)))();
   }, []);
   useEffect(() => {
-    console.log(stories);
-  }, [stories]);
+    console.log(showMore);
+  }, [showMore]);
   return (
     <div className="storiessection">
       {props.selectedCategory == "all" &&
-        showAllStories(stories, props.categories)}
+        showAllStories(stories, props.categories, setShowMore, showMore)}
     </div>
   );
 }
@@ -34,7 +35,7 @@ async function getSelectedStories(category) {
   }
 }
 
-function showAllStories(stories, categories) {
+function showAllStories(stories, categories, setShowMore, showMore) {
   const uniqueStoryIDs = new Set();
   const uniqueStories = [];
   for (const obj of stories) {
@@ -49,22 +50,34 @@ function showAllStories(stories, categories) {
       return (
         <div className="storybycategory" key={key}>
           <p>Top stories about {item[0]}</p>
-          <div className="categorystories">
-          {uniqueStories?.map((story, key) => {
-            if (story.category == item[0])
-              return (
-                <div className="story" key={key}>
-                  <p>
-                    {story.heading}
-                    <br />
-                    <span className="storydescription">
-                      {story.description}
-                    </span>
-                  </p>
-                </div>
-              );
-          })}
+          <div
+            className={(showMore==item[0]) ? "categorystoriesShowMore" : "categorystories"}
+          >
+            {uniqueStories?.map((story, key) => {
+              if (story.category == item[0])
+                return (
+                  <div className="story" key={key}>
+                    <p>
+                      {story.heading}
+                      <br />
+                      <span className="storydescription">
+                        {story.description}
+                      </span>
+                    </p>
+                  </div>
+                );
+            })}
           </div>
+          {key > 0 && (
+            <button
+              onClick={() => {
+                if (showMore == false) setShowMore(item[0]);
+                else setShowMore(false);
+              }}
+            >
+              See More
+            </button>
+          )}
         </div>
       );
   });
