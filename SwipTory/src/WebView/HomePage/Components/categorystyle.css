@@ -1,3 +1,8 @@
+.storypart {
+  width: 100%;
+  height: max-content;
+}
+
 .categories {
   width: 100%;
   display: flex;

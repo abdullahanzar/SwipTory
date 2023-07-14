@@ -37,7 +37,7 @@
 
 .navbar button:nth-of-type(2) {
   border-radius: 1.25rem;
-  background: #73ABFF;
+  background: #73abff;
   border: none;
   color: #fff;
   font-size: 1rem;
@@ -45,7 +45,7 @@
 }
 
 .navbar button:first-of-type:hover {
-  background: #73ABFF;
+  background: #73abff;
   cursor: pointer;
 }
 
@@ -55,11 +55,11 @@
 }
 
 .navbar .buttons .addstory {
-  background: #FF7373;
+  background: #ff7373;
 }
 
 .navbar .buttons .addstory:hover {
-  background: #73ABFF;
+  background: #73abff;
 }
 
 .avatar {
@@ -76,8 +76,8 @@
 }
 
 .usercontrols {
-  position: relative;
-  float: right;
+  position: absolute;
+  right: 0;
   background: #fff;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   padding: 1.5rem;
@@ -93,7 +93,7 @@
 }
 
 .usercontrols button {
-  background: #FF7373;
+  background: #ff7373;
   border-radius: 1.25rem;
   border: none;
   padding: 0.75rem;
@@ -102,5 +102,5 @@
 }
 
 .usercontrols button:hover {
-  background: #73ABFF;
+  background: #73abff;
 }

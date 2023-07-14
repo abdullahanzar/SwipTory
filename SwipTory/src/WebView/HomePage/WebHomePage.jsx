@@ -20,7 +20,7 @@ export default function WebHomePage() {
   }, [isLogIn]);
 
   return (
-    <div>
+    <div className="homepage">
       <Navbar
         setIsSignUp={setIsSignUp}
         setIsLogIn={setIsLogIn}
