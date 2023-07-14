@@ -76,6 +76,7 @@ export default function Navbar(props) {
               setIsLoggedIn(false);
               setShowUserControls(false);
               localStorage.removeItem("token");
+              localStorage.removeItem('user');
             }}
           >
             Log Out

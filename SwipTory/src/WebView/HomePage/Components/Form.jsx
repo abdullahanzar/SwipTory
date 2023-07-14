@@ -34,6 +34,7 @@ export default function Form(props) {
       else {
       setResponse(`Log In successful. ✓`);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", response.data.user);
       props.setIsLogIn(false);
       setIsLoggedIn(response.data.user);
       }

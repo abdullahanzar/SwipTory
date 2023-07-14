@@ -10,7 +10,10 @@ export default function AddStory(props) {
   const [tempState, setTempState] = useState({});
   const [status, setStatus] = useState([]);
   const doClose = (key) => {
-    if (key + 1 === count) props.closeStory(false);
+    if (key + 1 === count) { 
+      props.closeStory(false);
+      location.reload();
+    }
   };
   useEffect(() => {
     setSlides([...slides, { number: count }]);

@@ -27,7 +27,7 @@ function App() {
             },
           }
         );
-        if (!response.data.error) setIsLoggedIn(true);
+        if (!response.data.error) setIsLoggedIn(localStorage.getItem('user'));
       } catch (e) {
         console.log(e);
       }
