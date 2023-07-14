@@ -160,8 +160,8 @@ app.post("/login", async (req, res) => {
 app.post("/story", isAuthenticated, async (req, res) => {
   const storyID = req.body.storyID;
   const found = await swipToryStory.find({ storyID });
-  const { heading, description, imageURL, category } = req.body;
-  if (!heading || !description || !imageURL || !category) {
+  const { heading, description, imageURL, category, createdByUser } = req.body;
+  if (!heading || !description || !imageURL || !category || !createdByUser) {
     return res.json({ error: "Imcomplete Body" });
   }
   if (found[0] == undefined) {
@@ -172,6 +172,7 @@ app.post("/story", isAuthenticated, async (req, res) => {
         description,
         imageURL,
         category,
+        createdByUser
       });
       return res.json({
         Success: "Story Successfully Uploaded",
@@ -196,6 +197,7 @@ app.post("/story", isAuthenticated, async (req, res) => {
         imageURL,
         category,
         iteration: iteration + 1,
+        createdByUser
       });
       return res.json({
         Success: "Story Successfully Uploaded",

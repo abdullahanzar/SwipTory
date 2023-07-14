@@ -10,7 +10,7 @@ export default function AddStory(props) {
   const [tempState, setTempState] = useState({});
   const [status, setStatus] = useState([]);
   const doClose = (key) => {
-    if (key + 1 === count) { 
+    if (key + 1 === count) {
       props.closeStory(false);
       location.reload();
     }
@@ -32,6 +32,8 @@ export default function AddStory(props) {
     setStatus(["true"]);
     Object.values(slideData).map(async (item, key) => {
       item["storyID"] = storyID;
+      item["createdByUser"] = localStorage.getItem("user");
+      console.log(item)
       try {
         setTimeout(async () => {
           const response = await axios.post(
