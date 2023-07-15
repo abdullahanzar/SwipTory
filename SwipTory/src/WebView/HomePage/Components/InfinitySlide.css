@@ -39,3 +39,29 @@
   object-fit: cover;
   z-index: 1;
 }
+
+.slider {
+  position: absolute;
+  right: 1%;
+  width: 98%;
+  height: 10px;
+  background-color: rgba(109, 108, 108, 0.65);
+  border-radius: 12px;
+  z-index: 2;
+}
+
+.sliding {
+  height: 100%;
+  background-color: rgba(37, 37, 37, 0.797);
+  border-radius: 10px;
+  animation: progress-animation 3.5s infinite;
+}
+
+@keyframes progress-animation {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

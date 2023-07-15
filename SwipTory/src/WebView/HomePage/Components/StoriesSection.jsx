@@ -34,9 +34,6 @@ export default function StoriesSection(props) {
       setUserStories(stories);
     })();
   }, [isLoggedIn]);
-  useEffect(() => {
-    console.log(editStoryID);
-  }, [editStoryID]);
   return (
     <div className="storiessection">
       {isLoggedIn &&
