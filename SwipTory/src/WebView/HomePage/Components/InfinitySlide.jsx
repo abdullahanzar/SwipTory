@@ -5,10 +5,13 @@ import axios from "axios";
 export default function InfinitySlide(props) {
   const [displayStory, setdisplayStory] = useState([]);
   const [currentSlide, setCurrentSlide] = useState({});
+  const [iteration, setIteration] = useState(props.storyID);
+  const [lastSlide, setLastSlide] = useState(0);
   useEffect(() => {
-    (async () => setdisplayStory(await fetchStoryByID(props.storyID)))();
-  }, [props.storyID]);
+    (async () => setdisplayStory(await fetchStoryByID(iteration)))();
+  }, [iteration]);
   useEffect(() => {
+    const interval = [];
     if (displayStory.length > 1) {
       const timeouts = [];
 
@@ -18,8 +21,9 @@ export default function InfinitySlide(props) {
         displayStory.forEach((item, index) => {
           const timeout = setTimeout(() => {
             setCurrentSlide({ ...item });
+            if(index+1==displayStory.length)
+            setLastSlide(index);
           }, index * 3000);
-
           timeouts.push(timeout);
         });
       };
@@ -32,12 +36,28 @@ export default function InfinitySlide(props) {
     } else {
       displayStory.map((item, index) => {
         setCurrentSlide(item);
+        const intervalID = setInterval(()=>{
+            setIteration(prev=>prev+1);
+        }, 3000)
+        interval.push(intervalID);
+        return ()=>clearInterval(interval[0])
       });
     }
+    return ()=>clearInterval(interval[0])
   }, [displayStory]);
-  useEffect(() => {
-    console.log(currentSlide);
-  }, [currentSlide]);
+  useEffect(()=>{
+    const interval=[];
+    if(lastSlide!=0) {
+        const intervalID = setInterval(()=>{
+            setIteration(prev=>prev+1);
+        }, 3000)
+        interval.push(intervalID);
+    }
+    return ()=>clearInterval(interval[0])
+  }, [lastSlide])
+  useEffect(()=>{
+    console.log(iteration);
+  }, [iteration])
   return (
     <div className="infinitySlides">
         <div className="slider">

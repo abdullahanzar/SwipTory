@@ -54,7 +54,7 @@
   height: 100%;
   background-color: rgba(37, 37, 37, 0.797);
   border-radius: 10px;
-  animation: progress-animation 3.5s infinite;
+  animation: progress-animation 3.7s infinite;
 }
 
 @keyframes progress-animation {
