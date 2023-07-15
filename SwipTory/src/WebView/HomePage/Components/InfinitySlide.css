@@ -65,3 +65,42 @@
     width: 100%;
   }
 }
+
+.leftslider {
+    position: absolute;
+    top: 40%;
+    right: 150%;
+}
+
+.leftslider:hover {
+    background: rgba(109, 108, 108, 0.65);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.rightslider {
+    position: absolute;
+    top: 40%;
+    left: 150%;
+}
+
+.rightslider:hover {
+    background: rgba(109, 108, 108, 0.65);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.bookmark {
+    scale: 0.75;
+    position: absolute;
+    bottom: 2%;
+    z-index: 3;
+    left: 10%;
+    cursor: pointer;
+}
+
+.bookmark:hover {
+    background: rgba(109, 108, 108, 0.65);
+    border-radius: 50%;
+    cursor: pointer;
+}

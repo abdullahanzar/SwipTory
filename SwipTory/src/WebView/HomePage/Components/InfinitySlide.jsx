@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./InfinitySlide.css";
 import axios from "axios";
+import leftSlide from './assets/leftSlide.png';
+import rightSlide from './assets/rightSlide.png';
+import saveSlide from './Assets/saveSlide.png';
+import shareSlide from './Assets/shareSlide.png';
+import exitSlide from './Assets/existSlide.png'
+import SignUpForm from "./SignUpForm";
+import ReactModal from "react-modal";
 
 export default function InfinitySlide(props) {
   const [displayStory, setdisplayStory] = useState([]);
@@ -8,6 +15,7 @@ export default function InfinitySlide(props) {
   const [iteration, setIteration] = useState(props.storyID);
   const [lastSlide, setLastSlide] = useState(0);
   const [intervalID, setIntervalID] = useState(-1);
+  const [bookmarkChng, setBookmarkChng] = useState("")
   useEffect(() => {
     (async () => setdisplayStory(await fetchStoryByID(iteration)))();
     clearInterval(intervalID)
@@ -60,15 +68,18 @@ export default function InfinitySlide(props) {
     return ()=>clearInterval(interval[0])
   }, [lastSlide])
   useEffect(()=>{
-    console.log(iteration);
-  }, [iteration])
+    if(bookmarkChng=="Not logged in") {
+        props.setToLogIn(true);
+        props.setClose(false);
+    }
+  }, [bookmarkChng])
   return (
     <div className="infinitySlides">
-        <div className="slider">
+        {(intervalID!==-1) && <div className="slider">
             <div className="sliding"></div>
-          </div>
+          </div>}
       {
-        <div className="slide" onClick={()=>clearInterval(intervalID)}>
+        <div className="slide" onClick={()=>{clearInterval(intervalID);setIntervalID(-1)}}>
           <p>
             {currentSlide.heading}
             <br />
@@ -77,6 +88,15 @@ export default function InfinitySlide(props) {
           <img src={currentSlide.imageURL} />
         </div>
       }
+      <div className="leftslider">
+        <img src={leftSlide} alt="LEFT" onClick={()=>{setIteration(prev=>prev-1)}}/>
+      </div>
+      <div className="rightslider">
+        <img src={rightSlide} alt="RIGHT" onClick={()=>{setIteration(prev=>prev+1)}}/>
+      </div>
+      <div className="bookmark" onClick={()=>{setBookmark(iteration, setBookmarkChng)}}>
+        <img src={saveSlide} alt="Save" />
+      </div>
     </div>
   );
 }
@@ -90,4 +110,19 @@ async function fetchStoryByID(storyID) {
   } catch (e) {
     console.log(e);
   }
+}
+
+async function setBookmark(storyID, setBookmarkChng) {
+    try {
+        const payload = {
+            user: localStorage.getItem('user'),
+            storyID: storyID
+        }
+        const response = await axios.post('https://swiptory.onrender.com/bookmark');
+        if(response.data?.error=="Sign In First")
+        setBookmarkChng("Not logged in")
+    }
+    catch (e) {
+        console.log(e);
+    }
 }
