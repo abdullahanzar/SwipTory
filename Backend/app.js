@@ -279,7 +279,7 @@ app.get("/story/:storyID", async (req, res) => {
     const found = await swipToryStory.find({ storyID });
     return res.json(found);
   } catch (e) {
-    return res.json({ "Error retrieving": "Contact Developer" });
+    return res.json({ "Error": "Contact Developer" });
   }
 });
 
