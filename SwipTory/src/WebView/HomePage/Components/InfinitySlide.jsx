@@ -7,8 +7,10 @@ export default function InfinitySlide(props) {
   const [currentSlide, setCurrentSlide] = useState({});
   const [iteration, setIteration] = useState(props.storyID);
   const [lastSlide, setLastSlide] = useState(0);
+  const [intervalID, setIntervalID] = useState(-1);
   useEffect(() => {
     (async () => setdisplayStory(await fetchStoryByID(iteration)))();
+    clearInterval(intervalID)
   }, [iteration]);
   useEffect(() => {
     const interval = [];
@@ -40,6 +42,7 @@ export default function InfinitySlide(props) {
             setIteration(prev=>prev+1);
         }, 3000)
         interval.push(intervalID);
+        setIntervalID(intervalID)
         return ()=>clearInterval(interval[0])
       });
     }
@@ -52,6 +55,7 @@ export default function InfinitySlide(props) {
             setIteration(prev=>prev+1);
         }, 3000)
         interval.push(intervalID);
+        setIntervalID(intervalID)
     }
     return ()=>clearInterval(interval[0])
   }, [lastSlide])
@@ -64,7 +68,7 @@ export default function InfinitySlide(props) {
             <div className="sliding"></div>
           </div>
       {
-        <div className="slide">
+        <div className="slide" onClick={()=>clearInterval(intervalID)}>
           <p>
             {currentSlide.heading}
             <br />
