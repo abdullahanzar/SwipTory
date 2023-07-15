@@ -2,11 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import "./StoriesSection.css";
 import { SwipToryContext } from "../../../SwipToryContext";
 import axios from "axios";
+import Edit from "./Assets/Edit.png";
+import ReactModal from "react-modal";
+import EditStory from "./EditStory";
+import InfinitySlide from "./InfinitySlide";
 
 export default function StoriesSection(props) {
   const [stories, setStories] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [userStories, setUserStories] = useState([]);
+  const [editStory, setEditStory] = useState(false);
+  const [editStoryID, setEditStoryID] = useState("");
+  const [infinitySlide, setInfinitySlide] = useState(false);
   const { isLoggedIn } = useContext(SwipToryContext);
   useEffect(() => {
     (async () =>
@@ -27,13 +34,50 @@ export default function StoriesSection(props) {
       setUserStories(stories);
     })();
   }, [isLoggedIn]);
+  useEffect(() => {
+    console.log(editStoryID);
+  }, [editStoryID]);
   return (
     <div className="storiessection">
-      {isLoggedIn && showUserStories(userStories)}
+      {isLoggedIn &&
+        showUserStories(
+          userStories,
+          setEditStory,
+          setEditStoryID,
+          setInfinitySlide
+        )}
       {props.selectedCategory == "all" &&
-        showAllStories(stories, props.categories, setShowMore, showMore)}
+        showAllStories(
+          stories,
+          props.categories,
+          setShowMore,
+          showMore,
+          setInfinitySlide,
+          setEditStoryID
+        )}
       {props.selectedCategory !== "all" &&
-        showCategoryStories(stories, props.selectedCategory)}
+        showCategoryStories(
+          stories,
+          props.selectedCategory,
+          setInfinitySlide,
+          setEditStoryID
+        )}
+      <ReactModal
+        isOpen={editStory}
+        onRequestClose={() => setEditStory(false)}
+        overlayClassName={"modalOverlay"}
+        className={"addstorymodal"}
+      >
+        <EditStory closeStory={setEditStory} storyID={editStoryID} />
+      </ReactModal>
+      <ReactModal
+        isOpen={infinitySlide}
+        overlayClassName={"overlayInfinity"}
+        onRequestClose={() => setInfinitySlide(false)}
+        className={"infinitySlide"}
+      >
+        <InfinitySlide storyID={editStoryID} />
+      </ReactModal>
     </div>
   );
 }
@@ -53,7 +97,14 @@ async function getSelectedStories(category) {
   }
 }
 
-function showAllStories(stories, categories, setShowMore, showMore) {
+function showAllStories(
+  stories,
+  categories,
+  setShowMore,
+  showMore,
+  setInfinitySlide,
+  setEditStoryID
+) {
   const uniqueStoryIDs = new Set();
   const uniqueStories = [];
   for (const obj of stories) {
@@ -77,7 +128,14 @@ function showAllStories(stories, categories, setShowMore, showMore) {
             {uniqueStories?.map((story, key) => {
               if (story.category == item[0])
                 return (
-                  <div className="story" key={key}>
+                  <div
+                    className="story"
+                    key={key}
+                    onClick={() => {
+                      setInfinitySlide(true);
+                      setEditStoryID(story.storyID);
+                    }}
+                  >
                     <p>
                       {story.heading}
                       <br />
@@ -116,13 +174,25 @@ function showAllStories(stories, categories, setShowMore, showMore) {
   });
 }
 
-function showCategoryStories(stories, category) {
+function showCategoryStories(
+  stories,
+  category,
+  setInfinitySlide,
+  setEditStoryID
+) {
   return (
     <div className="storybycategory">
       <p>Top stories about {category}</p>
       <div className="categorystoriesShowMore">
         {stories.map((story, key) => (
-          <div className="story" key={key}>
+          <div
+            className="story"
+            key={key}
+            onClick={() => {
+              setInfinitySlide(true);
+              setEditStoryID(story.storyID);
+            }}
+          >
             <p>
               {story.heading}
               <br />
@@ -136,20 +206,41 @@ function showCategoryStories(stories, category) {
   );
 }
 
-function showUserStories(stories) {
+function showUserStories(
+  stories,
+  setEditStory,
+  setEditStoryID,
+  setInfinitySlide
+) {
   if (!stories.error)
     return (
       <div className="storybycategory">
         <p>Your Stories</p>
         <div className="categorystoriesShowMore">
           {stories.map((story, key) => (
-            <div className="story" key={key}>
+            <div
+              className="story"
+              key={key}
+              onClick={() => {
+                setInfinitySlide(true);
+                setEditStoryID(story.storyID);
+              }}
+            >
               <p>
                 {story.heading}
                 <br />
                 <span className="storydescription">{story.description}</span>
               </p>
               <img src={story.imageURL} />
+              <button
+                onClick={() => {
+                  setEditStory(true);
+                  setEditStoryID(story.storyID);
+                }}
+              >
+                <img src={Edit} alt="" />
+                <p>Edit</p>
+              </button>
             </div>
           ))}
         </div>
@@ -165,9 +256,9 @@ function showUserStories(stories) {
         )}
       </div>
     );
-    return (
-        <div className="storybycategory">
-        <p>Please create stories to view your stories.</p>
-        </div>
-    )
+  return (
+    <div className="storybycategory">
+      <p>Please create stories to view your stories.</p>
+    </div>
+  );
 }
