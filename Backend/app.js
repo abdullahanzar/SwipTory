@@ -352,13 +352,20 @@ app.get('/like/:storyID', async (req, res) => {
   try {
     const storyID = req.params.storyID;
     const iteration = req.query.iteration;
-    if(!storyID || !iteration)
+    const username = req.query.username;
+    const user = [username];
+    if(!storyID || !iteration || !username)
     return res.json({error: "not provided with storyID or iteration"})
-    const check = await swipToryStory.findOne({ storyID, iteration });
+    const check = await swipToryStory.findOne({ storyID, iteration, likes : { $in: user}});
     if(check) {
-      return res.json({likes: check.likes});
+      return res.json({userLiked: true,
+        likes: check.likes});
     }
-    return res.json({error: "provided storyID or iteration does not exist."})
+    let likes = await swipToryStory.findOne({storyID, iteration});
+    if(likes)
+    likes = likes.likes;
+    return res.json({userLiked: false,
+      likes: likes})
   }
   catch(e) {
     return res.json({err: e});

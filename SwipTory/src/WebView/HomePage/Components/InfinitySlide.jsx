@@ -8,6 +8,7 @@ import savedSlide from "../Components/Assets/savedSlide.png";
 import shareSlide from "../Components/Assets/shareSlide.png";
 import exitSlide from "../Components/Assets/shareSlide.png";
 import likeSlide from "../Components/Assets/likeSlide.png";
+import likedSlide from "../Components/Assets/likedSlide.png";
 
 import SignUpForm from "./SignUpForm";
 import ReactModal from "react-modal";
@@ -19,10 +20,11 @@ export default function InfinitySlide(props) {
   const [lastSlide, setLastSlide] = useState(0);
   const [intervalID, setIntervalID] = useState(-1);
   const [bookmarkChng, setBookmarkChng] = useState("");
+  const [likeChng, setLikeChng] = useState(-1);
   useEffect(() => {
     (async () => setdisplayStory(await fetchStoryByID(iteration)))();
     clearInterval(intervalID);
-    isBookmarked(iteration, setBookmarkChng)
+    isBookmarked(iteration, setBookmarkChng);
   }, [iteration]);
   useEffect(() => {
     const interval = [];
@@ -126,17 +128,35 @@ export default function InfinitySlide(props) {
         <div
           className="bookmark"
           onClick={() => {
-            if(bookmarkChng!=='Bookmarked')
-            setBookmark(currentSlide.storyID, setBookmarkChng);
+            if (bookmarkChng !== "Bookmarked")
+              setBookmark(currentSlide.storyID, setBookmarkChng);
           }}
         >
           <img src={saveSlide} alt="Save" />
         </div>
       )}
-      <div className="likes" onClick={()=>{setLike(iteration)}}>
+      {likeChng == -1 ? (
+        <div
+          className="likes"
+          onClick={() => {
+            setLike(currentSlide.storyID, currentSlide.iteration, setLikeChng);
+          }}
+        >
           <img src={likeSlide} alt="" />
           <p>{currentSlide.likes?.length}</p>
-      </div>
+        </div>
+        
+      ) : (
+        <div
+          className="likes"
+          onClick={() => {
+            setLike(currentSlide.storyID, currentSlide.iteration, setLikeChng);
+          }}
+        >
+          <img src={likedSlide} alt="" />
+          <p>{currentSlide.likes?.length+1}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -153,7 +173,7 @@ async function fetchStoryByID(storyID) {
 }
 
 async function setBookmark(storyID, setBookmarkChng) {
-  console.log(storyID)
+  console.log(storyID);
   try {
     const payload = {
       username: localStorage.getItem("user"),
@@ -174,7 +194,9 @@ async function setBookmark(storyID, setBookmarkChng) {
       setBookmarkChng("Not logged in");
     else if (response.data?.username == localStorage.getItem("user"))
       setBookmarkChng("Bookmarked");
-    else if (response.data?.error == "Bookmark already exists. Try delete request.")
+    else if (
+      response.data?.error == "Bookmark already exists. Try delete request."
+    )
       setBookmarkChng("Bookmarked");
   } catch (e) {
     console.log(e);
@@ -199,13 +221,41 @@ async function isBookmarked(storyID, setBookmarkChng) {
     );
     if (response.data?.error == "Bookmark already exists. Try delete request.")
       setBookmarkChng("Bookmarked");
-    else 
-      setBookmarkChng("")
+    else setBookmarkChng("");
   } catch (e) {
     console.log(e);
   }
 }
 
-async function setLike(storyID) {
+async function setLike(storyID, iteration, setLikeChng) {
+  try {
+    const payload = {
+      storyID,
+      username: localStorage.getItem("user"),
+      iteration,
+    };
+    const response = await axios.post(
+      "https://swiptory.onrender.com/like",
+      payload,
+      {
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          token: localStorage.getItem("token"),
+        },
+      }
+    );
+    if (response.data.includes(localStorage.getItem("user")))
+      setLikeChng(response.data.length);
+  } catch (e) {
+    console.log(e);
+  }
+}
 
+async function isLiked(storyID, iteration, setLikeChng) {
+  try {
+    
+  }
+  catch(e) {
+    console.log(e)
+  }
 }
