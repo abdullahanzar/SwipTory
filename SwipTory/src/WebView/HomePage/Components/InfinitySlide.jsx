@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./InfinitySlide.css";
 import axios from "axios";
-import leftSlide from "./assets/leftSlide.png";
+import leftSlide from "../Components/Assets/leftSlide.png";
 import rightSlide from "./assets/rightSlide.png";
 import saveSlide from "./Assets/saveSlide.png";
 import savedSlide from "./Assets/savedSlide.png";
