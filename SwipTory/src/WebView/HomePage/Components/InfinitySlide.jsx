@@ -152,7 +152,7 @@ export default function InfinitySlide(props) {
           }}
         >
           <img src={likeSlide} alt="" />
-          <p>{currentSlide.likes?.length}</p>
+          <p>{(Math.abs(likeChng)!=1)&&Math.abs(likeChng)||currentSlide.likes?.length}</p>
         </div>
       ) : (
         <div
