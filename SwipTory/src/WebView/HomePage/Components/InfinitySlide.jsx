@@ -24,7 +24,6 @@ export default function InfinitySlide(props) {
   useEffect(() => {
     (async () => setdisplayStory(await fetchStoryByID(iteration)))();
     clearInterval(intervalID);
-    isBookmarked(iteration, setBookmarkChng);
   }, [iteration]);
   useEffect(() => {
     const interval = [];
@@ -87,6 +86,7 @@ export default function InfinitySlide(props) {
   }, [likeChng]);
   useEffect(() => {
     isLiked(currentSlide.storyID, currentSlide.iteration, setLikeChng);
+    isBookmarked(currentSlide.storyID, setBookmarkChng);
   }, [currentSlide]);
   return (
     <div className="infinitySlides">
@@ -217,13 +217,10 @@ async function setBookmark(storyID, setBookmarkChng) {
 
 async function isBookmarked(storyID, setBookmarkChng) {
   try {
-    const payload = {
-      username: localStorage.getItem("user"),
-      storyID: storyID,
-    };
-    const response = await axios.post(
-      "https://swiptory.onrender.com/bookmark",
-      payload,
+    console.log(storyID)
+    const username = localStorage.getItem("user");
+    const response = await axios.get(
+      `https://swiptory.onrender.com/bookmark/${username}?storyID=${storyID}`,
       {
         headers: {
           "content-type": "application/x-www-form-urlencoded",
@@ -231,7 +228,8 @@ async function isBookmarked(storyID, setBookmarkChng) {
         },
       }
     );
-    if (response.data?.error == "Bookmark already exists. Try delete request.")
+    console.log(response);
+    if (response.data?.found ?? false)
       setBookmarkChng("Bookmarked");
     else setBookmarkChng("");
   } catch (e) {
@@ -279,7 +277,7 @@ async function isLiked(storyID, iteration, setLikeChng) {
         },
       }
     );
-    console.log(response);
+
     if (response.data.userLiked) setLikeChng(response.data.likes.length);
     else setLikeChng(-1);
   } catch (e) {

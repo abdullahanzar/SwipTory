@@ -254,8 +254,8 @@ app.put("/story", isAuthenticated, async (req, res) => {
   }
 });
 
-app.delete("/story", isAuthenticated, async (req, res) => {
-  const storyID = req.body.storyID;
+app.delete("/story/:id", isAuthenticated, async (req, res) => {
+  const storyID = req.params.id;
   try {
     await swipToryStory.deleteMany({ storyID });
     res.json({ Success: "Delete successful" });
@@ -392,7 +392,6 @@ app.post("/bookmark", isAuthenticated, async (req, res) => {
     );
     res.json(found);
   } catch (e) {
-    console.log("Error is occuring");
     res.json({ error: "You are missing either user or storyID", ERR: e });
   }
 });
@@ -416,7 +415,7 @@ app.get("/bookmark/:username", isAuthenticated, async (req, res) => {
   }
 })
 
-app.delete("/bookmark", isAuthenticated, async (req, res) => {
+app.put("/bookmark", isAuthenticated, async (req, res) => {
   try {
     const user = req.body.username;
     const storyID = req.body.storyID;
