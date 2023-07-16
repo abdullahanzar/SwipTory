@@ -79,16 +79,15 @@ export default function InfinitySlide(props) {
     }
     console.log(bookmarkChng);
   }, [bookmarkChng]);
-  useEffect(()=>{
-    if(likeChng == -404) {
+  useEffect(() => {
+    if (likeChng == -404) {
       props.setToLogIn(true);
       props.setClose(false);
     }
-  }, [likeChng])
-  useEffect(()=>{
-    if(currentSlide?.likes?.includes?.(localStorage.getItem("user")))
-    setLikeChng(200)
-  }, [currentSlide])
+  }, [likeChng]);
+  useEffect(() => {
+    isLiked(currentSlide.storyID, currentSlide.iteration, setLikeChng);
+  }, [currentSlide]);
   return (
     <div className="infinitySlides">
       {intervalID !== -1 && (
@@ -145,7 +144,7 @@ export default function InfinitySlide(props) {
           <img src={saveSlide} alt="Save" />
         </div>
       )}
-      {(likeChng == -1 || likeChng<-2)? (
+      {likeChng == -1 || likeChng <= -1 ? (
         <div
           className="likes"
           onClick={() => {
@@ -159,11 +158,15 @@ export default function InfinitySlide(props) {
         <div
           className="likes"
           onClick={() => {
-            setLike(currentSlide.storyID, currentSlide.iteration, setLikeChng);
+            removeLike(
+              currentSlide.storyID,
+              currentSlide.iteration,
+              setLikeChng
+            );
           }}
         >
           <img src={likedSlide} alt="" />
-          <p>{currentSlide.likes?.length + 1}</p>
+          <p>{likeChng}</p>
         </div>
       )}
     </div>
@@ -253,11 +256,12 @@ async function setLike(storyID, iteration, setLikeChng) {
         },
       }
     );
-    console.log(response)
+    //console.log(response);
     if (response.data?.includes?.(localStorage.getItem("user")))
       setLikeChng(response.data.length);
-    else if(response.data?.error == 'Sign In First')
-      setLikeChng(-404)
+    else if (response.data?.error == "Sign In First") setLikeChng(-404);
+    else if (response.data?.error == "User has already liked the story.")
+      setLikeChng("Click me again.");
   } catch (e) {
     console.log(e);
   }
@@ -265,17 +269,17 @@ async function setLike(storyID, iteration, setLikeChng) {
 
 async function isLiked(storyID, iteration, setLikeChng) {
   try {
+    const user = localStorage.getItem("user");
     const response = await axios.get(
-      `https://swiptory.onrender.com/like/${storyID}?iteration=${iteration}&username=${
-        (localStorage.getItem("user"),
-        {
-          headers: {
-            "content-type": "application/x-www-form-urlencoded",
-            token: localStorage.getItem("token"),
-          },
-        })
-      }`
+      `https://swiptory.onrender.com/like/${storyID}?iteration=${iteration}&username=${user}`,
+      {
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          token: localStorage.getItem("token"),
+        },
+      }
     );
+    console.log(response);
     if (response.data.userLiked) setLikeChng(response.data.likes.length);
     else setLikeChng(-1);
   } catch (e) {
@@ -285,9 +289,24 @@ async function isLiked(storyID, iteration, setLikeChng) {
 
 async function removeLike(storyID, iteration, setLikeChng) {
   try {
-    const response = axios.delete()
-  }
-  catch(e) {
-
+    const response = await axios.put(
+      "https://swiptory.onrender.com/like",
+      {
+        storyID,
+        iteration,
+        username: localStorage.getItem("user"),
+      },
+      {
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          token: localStorage.getItem("token"),
+        },
+      }
+    );
+    if (!response.data.likes?.includes(localStorage.getItem("user"))) {
+      setLikeChng(-response.data.likes.length);
+    }
+  } catch (e) {
+    console.log(e);
   }
 }
