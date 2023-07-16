@@ -76,7 +76,6 @@ export default function InfinitySlide(props) {
       props.setToLogIn(true);
       props.setClose(false);
     }
-    console.log(bookmarkChng);
   }, [bookmarkChng]);
   useEffect(() => {
     if (likeChng == -404) {
@@ -131,7 +130,13 @@ export default function InfinitySlide(props) {
       </div>
       {bookmarkChng == "Bookmarked" ? (
         <div className="bookmark">
-          <img src={savedSlide} alt="Saved" />
+          <img
+            src={savedSlide}
+            alt="Saved"
+            onClick={() => {
+              removeBookmark(currentSlide.storyID, setBookmarkChng);
+            }}
+          />
         </div>
       ) : (
         <div
@@ -152,7 +157,10 @@ export default function InfinitySlide(props) {
           }}
         >
           <img src={likeSlide} alt="" />
-          <p>{(Math.abs(likeChng)!=1)&&Math.abs(likeChng)||currentSlide.likes?.length}</p>
+          <p>
+            {(Math.abs(likeChng) != 1 && Math.abs(likeChng)) ||
+              currentSlide.likes?.length}
+          </p>
         </div>
       ) : (
         <div
@@ -185,7 +193,6 @@ async function fetchStoryByID(storyID) {
 }
 
 async function setBookmark(storyID, setBookmarkChng) {
-  console.log(storyID);
   try {
     const payload = {
       username: localStorage.getItem("user"),
@@ -217,7 +224,6 @@ async function setBookmark(storyID, setBookmarkChng) {
 
 async function isBookmarked(storyID, setBookmarkChng) {
   try {
-    console.log(storyID)
     const username = localStorage.getItem("user");
     const response = await axios.get(
       `https://swiptory.onrender.com/bookmark/${username}?storyID=${storyID}`,
@@ -228,9 +234,7 @@ async function isBookmarked(storyID, setBookmarkChng) {
         },
       }
     );
-    console.log(response);
-    if (response.data?.found ?? false)
-      setBookmarkChng("Bookmarked");
+    if (response.data?.found ?? false) setBookmarkChng("Bookmarked");
     else setBookmarkChng("");
   } catch (e) {
     console.log(e);
@@ -304,6 +308,30 @@ async function removeLike(storyID, iteration, setLikeChng) {
     if (!response.data.likes?.includes(localStorage.getItem("user"))) {
       setLikeChng(-response.data.likes.length);
     }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+async function removeBookmark(storyID, setBookmarkChng) {
+  try {
+    const response = await axios.put(
+      "https://swiptory.onrender.com/bookmark",
+      {
+        username: localStorage.getItem("user"),
+        storyID: storyID,
+      },
+      {
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          token: localStorage.getItem("token"),
+        },
+      }
+    );
+    if(response.data?.username==localStorage.getItem('user'))
+    setBookmarkChng("")
+    else 
+    setBookmarkChng("Bookmarked")
   } catch (e) {
     console.log(e);
   }

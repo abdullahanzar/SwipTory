@@ -32,7 +32,6 @@ export default function StoriesSection(props) {
         `https://swiptory.onrender.com/user/story/${user}`
       );
       stories = stories.data;
-      console.log(stories);
       setUserStories(stories);
     })();
   }, [isLoggedIn]);
