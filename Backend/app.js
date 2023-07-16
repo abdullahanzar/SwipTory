@@ -319,11 +319,51 @@ app.post("/like", isAuthenticated, async (req, res) => {
         new: true,
       }
     );
-    return res.json({ found });
+    return res.json(found.likes);
   } catch (e) {
     return res.json({ Error: e });
   }
 });
+
+app.delete("/like", isAuthenticated, async (req, res) => {
+  try {
+    const user = req.body.username;
+    const userArray = [user];
+    const storyID = req.body.storyID;
+    const iteration = req.body.iteration;
+    const check = await swipToryStory.findOne({ storyID, iteration, likes : { $in: userArray}});
+    if(check) {
+      const response =  await swipToryStory.findOneAndUpdate({ storyID, iteration: iteration },
+        { $pull: { likes: user } },
+        {
+          new: true,
+        })
+      if(response)
+      return res.json(response)
+    }
+    return res.json({notFound: "Not Found"})
+  }
+  catch(e) {
+    return res.json({err: e});
+  }
+})
+
+app.get('/like/:storyID', async (req, res) => {
+  try {
+    const storyID = req.params.storyID;
+    const iteration = req.query.iteration;
+    if(!storyID || !iteration)
+    return res.json({error: "not provided with storyID or iteration"})
+    const check = await swipToryStory.findOne({ storyID, iteration });
+    if(check) {
+      return res.json({likes: check.likes});
+    }
+    return res.json({error: "provided storyID or iteration does not exist."})
+  }
+  catch(e) {
+    return res.json({err: e});
+  }
+})
 
 app.post("/bookmark", isAuthenticated, async (req, res) => {
   try {
@@ -350,12 +390,31 @@ app.post("/bookmark", isAuthenticated, async (req, res) => {
   }
 });
 
+app.get("/bookmark/:username", isAuthenticated, async (req, res) => {
+  try {
+  const user = req.params.username;
+  const storyID = req.query.storyID;
+  const storyIDArray = [storyID];
+  const check = await swipToryUser.findOne({username: user, bookmarks: { $in: storyIDArray }});
+  if(check) {
+    return res.json({found: true})
+  }
+  else {
+    return res.json({notFound: "Not Found"})
+  }
+  }
+  catch(e) {
+    res.json({err: e})
+    console.log(e)
+  }
+})
+
 app.delete("/bookmark", isAuthenticated, async (req, res) => {
   try {
     const user = req.body.username;
     const storyID = req.body.storyID;
-    const check = await swipToryUser.findOne({ username: user });
-    if (check.bookmarks.includes(storyID)) {
+    const check = await swipToryUser.findOne({ username: user, bookmarks: { $in : storyID} });
+    if (check) {
       const found = await swipToryUser.findOneAndUpdate(
         { username: user },
         {
