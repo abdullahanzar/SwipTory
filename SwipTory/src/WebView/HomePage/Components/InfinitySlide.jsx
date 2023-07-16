@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./InfinitySlide.css";
 import axios from "axios";
 import leftSlide from "../Components/Assets/leftSlide.png";
-import rightSlide from "./assets/rightSlide.png";
-import saveSlide from "./Assets/saveSlide.png";
-import savedSlide from "./Assets/savedSlide.png";
-import shareSlide from "./Assets/shareSlide.png";
-import exitSlide from "./Assets/existSlide.png";
-import likeSlide from "./Assets/likeSlide.png"
+import rightSlide from "../Components/Assets/rightSlide.png";
+import saveSlide from "../Components/Assets/saveSlide.png";
+import savedSlide from "../Components/Assets/savedSlide.png";
+import shareSlide from "../Components/Assets/shareSlide.png";
+import exitSlide from "../Components/Assets/shareSlide.png";
+import likeSlide from "../Components/Assets/likeSlide.png";
+
 import SignUpForm from "./SignUpForm";
 import ReactModal from "react-modal";
 
