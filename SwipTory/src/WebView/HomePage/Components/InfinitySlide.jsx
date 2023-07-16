@@ -7,6 +7,7 @@ import saveSlide from "./Assets/saveSlide.png";
 import savedSlide from "./Assets/savedSlide.png";
 import shareSlide from "./Assets/shareSlide.png";
 import exitSlide from "./Assets/existSlide.png";
+import likeSlide from "./Assets/likeSlide.png"
 import SignUpForm from "./SignUpForm";
 import ReactModal from "react-modal";
 
@@ -131,6 +132,10 @@ export default function InfinitySlide(props) {
           <img src={saveSlide} alt="Save" />
         </div>
       )}
+      <div className="likes" onClick={()=>{setLike(iteration)}}>
+          <img src={likeSlide} alt="" />
+          <p>{currentSlide.likes}</p>
+      </div>
     </div>
   );
 }
@@ -197,4 +202,8 @@ async function isBookmarked(storyID, setBookmarkChng) {
   } catch (e) {
     console.log(e);
   }
+}
+
+async function setLike(storyID) {
+    
 }

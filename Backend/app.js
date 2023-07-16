@@ -41,8 +41,8 @@ const swipToryStorySchema = new mongoose.Schema({
   imageURL: String,
   category: String,
   likes: {
-    type: Number,
-    default: 0,
+    type: Array,
+    default: [],
   },
   iteration: {
     type: Number,
@@ -302,14 +302,19 @@ app.get("/user/story/:username", async(req, res)=>{
 
 app.post("/like", isAuthenticated, async (req, res) => {
   try {
+    const user = req.body.username;
     const storyID = req.body.storyID;
-    const check = await swipToryStory.findOne({ storyID });
-    console.log(check);
-    if (check == null || check == undefined)
-      return res.json({ error: "This story doesn't exist in the database" });
+    const iteration = req.body.iteration;
+    const userArray = [user]
+    if(!user || !storyID || !iteration) {
+      return res.json({error: "Not provided username or storyID or iteration."})
+    }
+    const check = await swipToryStory.findOne({ storyID, iteration, likes : { $in: userArray}});
+    if (check)
+      return res.json({ error: "User has already liked the story." });
     const found = await swipToryStory.findOneAndUpdate(
-      { storyID, iteration: 0 },
-      { $inc: { likes: 1 } },
+      { storyID, iteration: iteration },
+      { $push: { likes: user } },
       {
         new: true,
       }
