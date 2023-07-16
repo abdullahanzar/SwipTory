@@ -28,7 +28,6 @@ export default function Form(props) {
           "content-type": "application/x-www-form-urlencoded",
         },
       })
-      console.log(response)
       if(response.data.error)
       setResponse(`${response.data.error}. Incorrect username or password.`)
       else {

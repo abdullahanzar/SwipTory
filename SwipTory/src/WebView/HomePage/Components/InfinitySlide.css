@@ -111,10 +111,15 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    bottom: 2%;
+    bottom: 2.5%;
     z-index: 3;
     right: 10%;
     cursor: pointer;
+}
+
+.likes img {
+    width: 40px;
+    height: 40px;
 }
 
 .likes p {

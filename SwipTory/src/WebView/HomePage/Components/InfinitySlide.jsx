@@ -126,7 +126,7 @@ export default function InfinitySlide(props) {
           className="bookmark"
           onClick={() => {
             if(bookmarkChng!=='Bookmarked')
-            setBookmark(iteration, setBookmarkChng);
+            setBookmark(currentSlide.storyID, setBookmarkChng);
           }}
         >
           <img src={saveSlide} alt="Save" />
@@ -134,7 +134,7 @@ export default function InfinitySlide(props) {
       )}
       <div className="likes" onClick={()=>{setLike(iteration)}}>
           <img src={likeSlide} alt="" />
-          <p>{currentSlide.likes}</p>
+          <p>{currentSlide.likes?.length}</p>
       </div>
     </div>
   );
@@ -152,6 +152,7 @@ async function fetchStoryByID(storyID) {
 }
 
 async function setBookmark(storyID, setBookmarkChng) {
+  console.log(storyID)
   try {
     const payload = {
       username: localStorage.getItem("user"),
@@ -170,9 +171,9 @@ async function setBookmark(storyID, setBookmarkChng) {
     console.log(response);
     if (response.data?.error == "Sign In First")
       setBookmarkChng("Not logged in");
-    if (response.data?.username == localStorage.getItem("user"))
+    else if (response.data?.username == localStorage.getItem("user"))
       setBookmarkChng("Bookmarked");
-    if (response.data?.error == "Bookmark already exists. Try delete request.")
+    else if (response.data?.error == "Bookmark already exists. Try delete request.")
       setBookmarkChng("Bookmarked");
   } catch (e) {
     console.log(e);
@@ -205,5 +206,5 @@ async function isBookmarked(storyID, setBookmarkChng) {
 }
 
 async function setLike(storyID) {
-    
+
 }
