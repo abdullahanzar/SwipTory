@@ -58,7 +58,6 @@ export default function InfinitySlide(props) {
         setIntervalID(intervalID);
         return () => clearInterval(interval[0]);
       });
-      isLiked(iteration, currentSlide?.iteration ?? 0, setLikeChng);
     }
     return () => clearInterval(interval[0]);
   }, [displayStory]);
@@ -80,6 +79,16 @@ export default function InfinitySlide(props) {
     }
     console.log(bookmarkChng);
   }, [bookmarkChng]);
+  useEffect(()=>{
+    if(likeChng == -404) {
+      props.setToLogIn(true);
+      props.setClose(false);
+    }
+  }, [likeChng])
+  useEffect(()=>{
+    if(currentSlide?.likes?.includes?.(localStorage.getItem("user")))
+    setLikeChng(200)
+  }, [currentSlide])
   return (
     <div className="infinitySlides">
       {intervalID !== -1 && (
@@ -136,7 +145,7 @@ export default function InfinitySlide(props) {
           <img src={saveSlide} alt="Save" />
         </div>
       )}
-      {likeChng == -1 ? (
+      {(likeChng == -1 || likeChng<-2)? (
         <div
           className="likes"
           onClick={() => {
@@ -244,8 +253,11 @@ async function setLike(storyID, iteration, setLikeChng) {
         },
       }
     );
-    if (response.data.includes(localStorage.getItem("user")))
+    console.log(response)
+    if (response.data?.includes?.(localStorage.getItem("user")))
       setLikeChng(response.data.length);
+    else if(response.data?.error == 'Sign In First')
+      setLikeChng(-404)
   } catch (e) {
     console.log(e);
   }
@@ -254,15 +266,28 @@ async function setLike(storyID, iteration, setLikeChng) {
 async function isLiked(storyID, iteration, setLikeChng) {
   try {
     const response = await axios.get(
-      `https://swiptory.onrender.com/like/${storyID}?iteration=${iteration}&username=${localStorage.getItem(
-        "user"
-      )}`
+      `https://swiptory.onrender.com/like/${storyID}?iteration=${iteration}&username=${
+        (localStorage.getItem("user"),
+        {
+          headers: {
+            "content-type": "application/x-www-form-urlencoded",
+            token: localStorage.getItem("token"),
+          },
+        })
+      }`
     );
-    if(response.data.userLiked)
-    setLikeChng(response.data.likes.length);
-    else 
-    setLikeChng(-1);
+    if (response.data.userLiked) setLikeChng(response.data.likes.length);
+    else setLikeChng(-1);
   } catch (e) {
     console.log(e);
+  }
+}
+
+async function removeLike(storyID, iteration, setLikeChng) {
+  try {
+    const response = axios.delete()
+  }
+  catch(e) {
+
   }
 }

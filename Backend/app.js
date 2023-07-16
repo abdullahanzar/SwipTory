@@ -325,7 +325,7 @@ app.post("/like", isAuthenticated, async (req, res) => {
   }
 });
 
-app.delete("/like", isAuthenticated, async (req, res) => {
+app.put("/like", isAuthenticated, async (req, res) => {
   try {
     const user = req.body.username;
     const userArray = [user];
