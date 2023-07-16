@@ -7,6 +7,8 @@ import ReactModal from "react-modal";
 import EditStory from "./EditStory";
 import Form from "./Form";
 import InfinitySlide from "./InfinitySlide";
+import { useLocation } from "react-router-dom";
+import queryString from 'query-string';
 
 export default function StoriesSection(props) {
   const [stories, setStories] = useState([]);
@@ -17,6 +19,19 @@ export default function StoriesSection(props) {
   const [infinitySlide, setInfinitySlide] = useState(false);
   const [toLogIn, setToLogIn] = useState(false);
   const { isLoggedIn } = useContext(SwipToryContext);
+
+  useEffect(()=>{
+    const params = queryString.parse(location.search);
+
+    if(params.infinitySlide) {
+      params['infinitySlide'] = true;
+      setInfinitySlide(params.infinitySlide);
+    }
+    if(params.storyID) {
+     params['storyID'] =  parseInt(params.storyID);
+     setEditStoryID(params.storyID);
+    }
+  }, [useLocation])
   useEffect(() => {
     (async () =>
       setStories(await getSelectedStories(props.selectedCategory)))();
