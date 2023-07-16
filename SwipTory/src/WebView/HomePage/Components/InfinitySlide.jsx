@@ -58,6 +58,7 @@ export default function InfinitySlide(props) {
         setIntervalID(intervalID);
         return () => clearInterval(interval[0]);
       });
+      isLiked(iteration, currentSlide?.iteration ?? 0, setLikeChng);
     }
     return () => clearInterval(interval[0]);
   }, [displayStory]);
@@ -145,7 +146,6 @@ export default function InfinitySlide(props) {
           <img src={likeSlide} alt="" />
           <p>{currentSlide.likes?.length}</p>
         </div>
-        
       ) : (
         <div
           className="likes"
@@ -154,7 +154,7 @@ export default function InfinitySlide(props) {
           }}
         >
           <img src={likedSlide} alt="" />
-          <p>{currentSlide.likes?.length+1}</p>
+          <p>{currentSlide.likes?.length + 1}</p>
         </div>
       )}
     </div>
@@ -253,9 +253,16 @@ async function setLike(storyID, iteration, setLikeChng) {
 
 async function isLiked(storyID, iteration, setLikeChng) {
   try {
-    
-  }
-  catch(e) {
-    console.log(e)
+    const response = await axios.get(
+      `https://swiptory.onrender.com/like/${storyID}?iteration=${iteration}&username=${localStorage.getItem(
+        "user"
+      )}`
+    );
+    if(response.data.userLiked)
+    setLikeChng(response.data.likes.length);
+    else 
+    setLikeChng(-1);
+  } catch (e) {
+    console.log(e);
   }
 }

@@ -348,7 +348,7 @@ app.delete("/like", isAuthenticated, async (req, res) => {
   }
 })
 
-app.get('/like/:storyID', async (req, res) => {
+app.get('/like/:storyID', isAuthenticated, async (req, res) => {
   try {
     const storyID = req.params.storyID;
     const iteration = req.query.iteration;
