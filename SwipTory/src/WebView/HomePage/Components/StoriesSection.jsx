@@ -50,6 +50,10 @@ export default function StoriesSection(props) {
       setUserStories(stories);
     })();
   }, [isLoggedIn]);
+  useEffect(()=>{
+    if(editStory==true)
+    setInfinitySlide(false);
+  }, [editStory])
   return (
     <div className="storiessection">
       {isLoggedIn &&
@@ -57,7 +61,9 @@ export default function StoriesSection(props) {
           userStories,
           setEditStory,
           setEditStoryID,
-          setInfinitySlide
+          setInfinitySlide,
+          showMore,
+          setShowMore
         )}
       {props.selectedCategory == "all" &&
         showAllStories(
@@ -235,13 +241,15 @@ function showUserStories(
   stories,
   setEditStory,
   setEditStoryID,
-  setInfinitySlide
+  setInfinitySlide,
+  showMore,
+  setShowMore
 ) {
   if (!stories.error)
     return (
       <div className="storybycategory">
         <p>Your Stories</p>
-        <div className="categorystoriesShowMore">
+        <div className={showMore ? "categorystoriesShowMore" : "categorystoriesUSER" }>
           {stories.map((story, key) => (
             <div
               className="story"
@@ -272,7 +280,7 @@ function showUserStories(
         {stories?.length > 6 && (
           <button
             onClick={() => {
-              if (showMore == false) setShowMore(item[0]);
+              if (showMore == false) setShowMore(true);
               else setShowMore(false);
             }}
           >

@@ -36,22 +36,19 @@ export default function EditStory(props) {
       item["createdByUser"] = localStorage.getItem("user");
       try {
         const response = await axios.delete(
-          "https://swiptory.onrender.com/story",
+          `https://swiptory.onrender.com/story/${storyID}`,
           {
             headers: {
               "content-type": "application/x-www-form-urlencoded",
               token: localStorage.getItem("token"),
             },
-          },
-          {
-            storyID: storyID,
-          },
+          }
         );
         console.log(response)
       } catch (e) {
         console.log(e);
       }
-      /*try {
+      try {
         setTimeout(async () => {
           const response = await axios.post(
             "https://swiptory.onrender.com/story",
@@ -70,7 +67,7 @@ export default function EditStory(props) {
         }, 700 * key);
       } catch (e) {
         console.log(e);
-      }*/
+      }
     });
     if (Object.keys(slideData).length === 0) setStatus(["error"]);
   };

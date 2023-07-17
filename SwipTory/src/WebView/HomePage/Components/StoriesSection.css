@@ -58,6 +58,14 @@
   overflow: hidden;
 }
 
+.categorystoriesUSER {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  min-height: 25rem;
+}
+
 .categorystoriesShowMore {
   display: flex;
   flex-direction: row;
