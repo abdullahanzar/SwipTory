@@ -211,11 +211,19 @@ function showCategoryStories(
   setInfinitySlide,
   setEditStoryID
 ) {
+  const uniqueStoryIDs = new Set();
+  const uniqueStories = [];
+  for (const obj of stories) {
+    if (!uniqueStoryIDs.has(obj.storyID)) {
+      uniqueStoryIDs.add(obj.storyID);
+      uniqueStories.push(obj);
+    }
+  }
   return (
     <div className="storybycategory">
       <p>Top stories about {category}</p>
       <div className="categorystoriesShowMore">
-        {stories.map((story, key) => (
+        {uniqueStories.map((story, key) => (
           <div
             className="story"
             key={key}
@@ -245,12 +253,22 @@ function showUserStories(
   showMore,
   setShowMore
 ) {
+  const uniqueStoryIDs = new Set();
+  const uniqueStories = [];
+  if(!stories.error) {
+  for (const obj of stories) {
+    if (!uniqueStoryIDs.has(obj.storyID)) {
+      uniqueStoryIDs.add(obj.storyID);
+      uniqueStories.push(obj);
+    }
+  }
+  }
   if (!stories.error)
     return (
       <div className="storybycategory">
         <p>Your Stories</p>
         <div className={showMore ? "categorystoriesShowMore" : "categorystoriesUSER" }>
-          {stories.map((story, key) => (
+          {uniqueStories.map((story, key) => (
             <div
               className="story"
               key={key}

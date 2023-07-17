@@ -31,6 +31,14 @@ export default function EditStory(props) {
     const storyID = props.storyID;
     console.log(storyID);
     setStatus(["true"]);
+    if(Object.values(slideData).length<3) {
+      setStatus(["minbreach"]);
+      return
+    } 
+    if (Object.keys(slideData).length === 0) {
+      setStatus(["error"]);
+      return
+    } 
     Object.values(slideData).map(async (item, key) => {
       item["storyID"] = storyID;
       item["createdByUser"] = localStorage.getItem("user");
@@ -69,7 +77,7 @@ export default function EditStory(props) {
         console.log(e);
       }
     });
-    if (Object.keys(slideData).length === 0) setStatus(["error"]);
+    //if (Object.keys(slideData).length === 0) setStatus(["error"]);
   };
   return (
     <div className="addstory">
