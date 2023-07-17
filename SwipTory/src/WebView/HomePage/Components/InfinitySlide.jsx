@@ -6,9 +6,10 @@ import rightSlide from "../Components/Assets/rightSlide.png";
 import saveSlide from "../Components/Assets/saveSlide.png";
 import savedSlide from "../Components/Assets/savedSlide.png";
 import shareSlide from "../Components/Assets/shareSlide.png";
-import exitSlide from "../Components/Assets/shareSlide.png";
+import exitSlide from "../Components/Assets/existSlide.png";
 import likeSlide from "../Components/Assets/likeSlide.png";
 import likedSlide from "../Components/Assets/likedSlide.png";
+import { Toaster, toast } from "react-hot-toast";
 
 import SignUpForm from "./SignUpForm";
 import ReactModal from "react-modal";
@@ -21,6 +22,9 @@ export default function InfinitySlide(props) {
   const [intervalID, setIntervalID] = useState(-1);
   const [bookmarkChng, setBookmarkChng] = useState("");
   const [likeChng, setLikeChng] = useState(-1);
+  const notify = (message) => toast(message, {
+    duration: 2000
+  });
   useEffect(() => {
     (async () => setdisplayStory(await fetchStoryByID(iteration)))();
     clearInterval(intervalID);
@@ -177,6 +181,23 @@ export default function InfinitySlide(props) {
           <p>{likeChng}</p>
         </div>
       )}
+        <div
+          className="shareSlide"
+          onClick={() => {
+            const baseURL = window.location.origin;
+            (async () =>
+              navigator.clipboard.writeText(
+                `${baseURL}/?infinitySlide=true&storyID=${currentSlide.storyID}`
+              ))();
+                notify("Story copied to the clipboard. Share it. ;-)");
+          }}
+        >
+          <img src={shareSlide} />
+        </div>
+      <div className="exit" onClick={()=>props.setClose(false)}> 
+        <img src={exitSlide} />
+      </div>
+      <Toaster />
     </div>
   );
 }
@@ -328,10 +349,9 @@ async function removeBookmark(storyID, setBookmarkChng) {
         },
       }
     );
-    if(response.data?.username==localStorage.getItem('user'))
-    setBookmarkChng("")
-    else 
-    setBookmarkChng("Bookmarked")
+    if (response.data?.username == localStorage.getItem("user"))
+      setBookmarkChng("");
+    else setBookmarkChng("Bookmarked");
   } catch (e) {
     console.log(e);
   }
