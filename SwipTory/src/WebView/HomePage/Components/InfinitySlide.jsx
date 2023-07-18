@@ -13,6 +13,7 @@ import { Toaster, toast } from "react-hot-toast";
 
 import SignUpForm from "./SignUpForm";
 import ReactModal from "react-modal";
+import Slider from "./Slider";
 
 export default function InfinitySlide(props) {
   const [displayStory, setdisplayStory] = useState([]);
@@ -22,6 +23,7 @@ export default function InfinitySlide(props) {
   const [intervalID, setIntervalID] = useState(-1);
   const [bookmarkChng, setBookmarkChng] = useState("");
   const [likeChng, setLikeChng] = useState(-1);
+  const [showSlider, setShowSlider] = useState(0);
   const notify = (message) => toast(message, {
     duration: 2000
   });
@@ -30,8 +32,9 @@ export default function InfinitySlide(props) {
     clearInterval(intervalID);
   }, [iteration]);
   useEffect(() => {
+    
     const interval = [];
-    if (displayStory.length > 1) {
+    if (displayStory?.length > 1) {
       const timeouts = [];
 
       const renderItemsWithDelay = () => {
@@ -90,14 +93,15 @@ export default function InfinitySlide(props) {
   useEffect(() => {
     isLiked(currentSlide.storyID, currentSlide.iteration, setLikeChng);
     isBookmarked(currentSlide.storyID, setBookmarkChng);
+    setShowSlider(displayStory.length);
   }, [currentSlide]);
+
+  useEffect(()=>{
+    console.log(showSlider)
+  }, [showSlider])
   return (
     <div className="infinitySlides">
-      {intervalID !== -1 && (
-        <div className="slider">
-          <div className="sliding"></div>
-        </div>
-      )}
+      <Slider slides={showSlider} setSlides={setShowSlider} iteration={currentSlide.iteration}/>
       {
         <div
           className="slide"

@@ -295,7 +295,7 @@ function showUserStories(
             </div>
           ))}
         </div>
-        {stories?.length > 6 && (
+        {uniqueStories?.length > 6 && (
           <button
             onClick={() => {
               if (showMore == false) setShowMore(true);
