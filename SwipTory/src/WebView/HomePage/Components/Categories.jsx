@@ -3,9 +3,15 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import StoriesSection from "./StoriesSection";
 
-export default function Categories() {
+export default function Categories(props) {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  useEffect(()=>{
+    if(props.showBookmarks==true)
+    setSelectedCategory("bookmarks")
+    else 
+    setSelectedCategory("all")
+  }, [props.showBookmarks])
   useEffect(() => {
     (async () => setCategories(await getCategories()))();
   }, []);

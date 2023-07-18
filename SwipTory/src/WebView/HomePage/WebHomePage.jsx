@@ -12,12 +12,16 @@ export default function WebHomePage() {
   const [isLogIn, setIsLogIn] = useState(false);
   const [modal, setModal] = useState(false);
   const [addStory, setAddStory] = useState(false);
+  const [showBookmarks, setShowBookmarks] = useState(false);
   useEffect(() => {
     setModal(isSignUp);
   }, [isSignUp]);
   useEffect(() => {
     setModal(isLogIn);
   }, [isLogIn]);
+  useEffect(()=>{
+    console.log(showBookmarks)
+  }, [showBookmarks])
 
   return (
     <div className="homepage">
@@ -25,6 +29,8 @@ export default function WebHomePage() {
         setIsSignUp={setIsSignUp}
         setIsLogIn={setIsLogIn}
         setAddStory={setAddStory}
+        setShowBookmarks={setShowBookmarks}
+        bookmarks={showBookmarks}
       />
       <ReactModal
         isOpen={modal}
@@ -50,7 +56,7 @@ export default function WebHomePage() {
       >
         <AddStory closeStory={setAddStory}/>
       </ReactModal>
-      <Categories />
+      <Categories showBookmarks={showBookmarks} />
     </div>
   );
 }

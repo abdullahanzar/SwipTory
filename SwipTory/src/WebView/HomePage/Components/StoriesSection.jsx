@@ -74,13 +74,17 @@ export default function StoriesSection(props) {
           setInfinitySlide,
           setEditStoryID
         )}
-      {props.selectedCategory !== "all" &&
+      {props.selectedCategory !== "all" && props.selectedCategory !== "bookmarks" &&
         showCategoryStories(
           stories,
           props.selectedCategory,
           setInfinitySlide,
           setEditStoryID
         )}
+      {
+        props.selectedCategory == "bookmarks" && 
+        showBookmarkedStories()
+      }
       <ReactModal
         isOpen={editStory}
         onRequestClose={() => setEditStory(false)}
@@ -312,4 +316,18 @@ function showUserStories(
       <p>Please create stories to view your stories.</p>
     </div>
   );
+}
+
+
+function showBookmarkedStories() {
+  (
+    async()=>{
+      const user = localStorage.getItem('user')
+    }
+  )()
+  return (
+    <div className="storybycategory">
+      <p>Your Bookmarks</p>
+    </div>
+  )
 }

@@ -438,6 +438,25 @@ app.put("/bookmark", isAuthenticated, async (req, res) => {
   }
 });
 
+app.get('/user/bookmarks/:username', async (req, res) => {
+  try {
+    const username = req.params.username;
+    const response = await swipToryUser.findOne({
+      username
+    })
+    if(response) {
+      let userBookmarks = response.bookmarks;
+      userBookmarks = userBookmarks.filter((item,
+        index) => userBookmarks.indexOf(item) === index);
+      return  res.json(userBookmarks);
+    }
+    return res.json({notFound: "User does not exist!"})
+  }
+  catch(e) {
+    res.send(e)
+  }
+})
+
 app.post("/image", upload.single("image"), async (req, res) => {
   try {
     const imageData = req.file.buffer;

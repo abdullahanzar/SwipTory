@@ -34,7 +34,10 @@ export default function Navbar(props) {
           <div className="buttons">
             <button
               onClick={() => {
-                nav("/bookmarks");
+                if(props.bookmarks==false)
+                props.setShowBookmarks(true)
+                else
+                props.setShowBookmarks(false)
               }}
             >
               Bookmarks
