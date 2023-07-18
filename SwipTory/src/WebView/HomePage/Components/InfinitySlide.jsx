@@ -250,7 +250,6 @@ async function isBookmarked(storyID, setBookmarkChng) {
         },
       }
     );
-    console.log(response)
     if (response.data?.found ?? false) setBookmarkChng("Bookmarked");
     else setBookmarkChng("");
   } catch (e) {
