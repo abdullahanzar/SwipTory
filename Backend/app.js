@@ -438,7 +438,7 @@ app.put("/bookmark", isAuthenticated, async (req, res) => {
   }
 });
 
-app.get('/user/bookmarks/:username', async (req, res) => {
+app.get('/user/bookmarks/:username', isAuthenticated ,async (req, res) => {
   try {
     const username = req.params.username;
     const response = await swipToryUser.findOne({

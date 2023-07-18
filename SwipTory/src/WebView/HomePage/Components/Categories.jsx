@@ -33,7 +33,7 @@ export default function Categories(props) {
           );
         })}
       </div>
-      <StoriesSection selectedCategory={selectedCategory} categories={categories}/>
+      <StoriesSection selectedCategory={selectedCategory} categories={categories} showBookmarks={props.showBookmarks}/>
     </div>
   );
 }

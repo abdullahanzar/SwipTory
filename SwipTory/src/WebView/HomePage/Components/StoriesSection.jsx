@@ -18,6 +18,7 @@ export default function StoriesSection(props) {
   const [editStoryID, setEditStoryID] = useState("");
   const [infinitySlide, setInfinitySlide] = useState(false);
   const [toLogIn, setToLogIn] = useState(false);
+  const [bookmarkedStories, setBookmarkedStories] = useState([])
   const { isLoggedIn } = useContext(SwipToryContext);
 
   useEffect(()=>{
@@ -48,12 +49,20 @@ export default function StoriesSection(props) {
       );
       stories = stories.data;
       setUserStories(stories);
+      if(isLoggedIn)
+      setBookmarkedStories(await getBookMarkedStories())
     })();
   }, [isLoggedIn]);
   useEffect(()=>{
     if(editStory==true)
     setInfinitySlide(false);
   }, [editStory])
+  useEffect(()=>{
+    if(isLoggedIn && props.showBookmarks) {
+      (async () =>
+      setBookmarkedStories(await getBookMarkedStories()))();
+    }
+  }, [props.showBookmarks])
   return (
     <div className="storiessection">
       {isLoggedIn &&
@@ -83,7 +92,7 @@ export default function StoriesSection(props) {
         )}
       {
         props.selectedCategory == "bookmarks" && 
-        showBookmarkedStories()
+        showBookmarkedStories(bookmarkedStories, setInfinitySlide, setEditStoryID)
       }
       <ReactModal
         isOpen={editStory}
@@ -319,15 +328,67 @@ function showUserStories(
 }
 
 
-function showBookmarkedStories() {
-  (
-    async()=>{
-      const user = localStorage.getItem('user')
-    }
-  )()
+function showBookmarkedStories(bookmarkedStories, setInfinitySlide, setEditStoryID) {
+
   return (
     <div className="storybycategory">
       <p>Your Bookmarks</p>
+      <div className="categorystoriesShowMore">
+        {bookmarkedStories.map((story, key) => (
+          <div
+            className="story"
+            key={key}
+            onClick={() => {
+              setInfinitySlide(true);
+              setEditStoryID(story.storyID);
+            }}
+          >
+            <p>
+              {story.heading}
+              <br />
+              <span className="storydescription">{story.description}</span>
+            </p>
+            <img src={story.imageURL} />
+          </div>
+        ))}
+      </div>
     </div>
   )
+}
+
+async function getBookMarkedStories () {
+  const user = localStorage.getItem('user');
+  try {
+    let bookmarks = await axios.get(`https://swiptory.onrender.com/user/bookmarks/${user}`, {
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        token: localStorage.getItem("token"),
+      },
+    });
+    bookmarks = bookmarks.data;
+    let stories = [];
+
+    for (const item of bookmarks) {
+      const storyID = Number(item);
+      try {
+        const response = await axios.get(`https://swiptory.onrender.com/story/${storyID}`);
+        stories.push(...response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    stories = stories.reverse();
+    const uniqueStoryIDs = new Set();
+    const uniqueStories = [];
+    for (const obj of stories) {
+      if (!uniqueStoryIDs.has(obj.storyID)) {
+        uniqueStoryIDs.add(obj.storyID);
+        uniqueStories.push(obj);
+      }
+    }
+
+    return uniqueStories;
+  } catch (e) {
+    console.log(e);
+  }
 }
