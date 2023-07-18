@@ -32,7 +32,7 @@ export default function InfinitySlide(props) {
     clearInterval(intervalID);
   }, [iteration]);
   useEffect(() => {
-    
+    isBookmarked(displayStory[0]?.storyID, setBookmarkChng);
     const interval = [];
     if (displayStory?.length > 1) {
       const timeouts = [];
@@ -44,7 +44,7 @@ export default function InfinitySlide(props) {
           const timeout = setTimeout(() => {
             setCurrentSlide({ ...item });
             if (index + 1 == displayStory.length) setLastSlide(index);
-          }, index * 3000);
+          }, index * 6000);
           timeouts.push(timeout);
         });
       };
@@ -59,7 +59,7 @@ export default function InfinitySlide(props) {
         setCurrentSlide(item);
         const intervalID = setInterval(() => {
           setIteration((prev) => prev + 1);
-        }, 3000);
+        }, 6000);
         interval.push(intervalID);
         setIntervalID(intervalID);
         return () => clearInterval(interval[0]);
@@ -92,23 +92,15 @@ export default function InfinitySlide(props) {
   }, [likeChng]);
   useEffect(() => {
     isLiked(currentSlide.storyID, currentSlide.iteration, setLikeChng);
-    isBookmarked(currentSlide.storyID, setBookmarkChng);
+    
     setShowSlider(displayStory.length);
   }, [currentSlide]);
-
-  useEffect(()=>{
-    console.log(showSlider)
-  }, [showSlider])
   return (
     <div className="infinitySlides">
       <Slider slides={showSlider} setSlides={setShowSlider} iteration={currentSlide.iteration}/>
       {
         <div
           className="slide"
-          onClick={() => {
-            clearInterval(intervalID);
-            setIntervalID(-1);
-          }}
         >
           <p>
             {currentSlide.heading}
@@ -233,7 +225,6 @@ async function setBookmark(storyID, setBookmarkChng) {
         },
       }
     );
-    console.log(response);
     if (response.data?.error == "Sign In First")
       setBookmarkChng("Not logged in");
     else if (response.data?.username == localStorage.getItem("user"))
@@ -259,6 +250,7 @@ async function isBookmarked(storyID, setBookmarkChng) {
         },
       }
     );
+    console.log(response)
     if (response.data?.found ?? false) setBookmarkChng("Bookmarked");
     else setBookmarkChng("");
   } catch (e) {

@@ -20,20 +20,16 @@ export default function Slider(props) {
     }, [props.iteration]) */
     const [width, setWidth] = useState(100)
     useEffect(()=>{
-        console.log("slides" + props.slides)
         if(props.slides==1) 
         setWidth(100)
         else if(props.slides>1)
         setWidth(width/props.slides)
     }, [props.slides])
-    useEffect(()=>{
-        console.log("width " + width)
-    }, [width])
   return (
     <div className='mainSlider'>
             {Array.from({ length: props.slides }, (_, index) => (
               <div key={index} className='mainSliders' style={{width: `${width}%`}}>
-                <div className={(index == props.iteration) ? 'mainSlides' : 'mainSlidesNA'} >{index}</div>
+                <div className={(index == props.iteration) ? 'mainSlides' : 'mainSlidesNA'} ></div>
               </div>
             ))}
     </div>
