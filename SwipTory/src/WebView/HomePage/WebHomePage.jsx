@@ -5,6 +5,7 @@ import "./WebHomePage.css";
 import Form from "./Components/Form";
 import AddStory from "./Components/AddStory";
 import Categories from "./Components/Categories";
+import { Toaster, toast } from "react-hot-toast";
 ReactModal.setAppElement("#root");
 
 export default function WebHomePage() {
@@ -13,15 +14,18 @@ export default function WebHomePage() {
   const [modal, setModal] = useState(false);
   const [addStory, setAddStory] = useState(false);
   const [showBookmarks, setShowBookmarks] = useState(false);
+  const notify = (message) => toast(message, {
+    duration: 5000
+  });
+  useEffect(()=>{
+    notify("Please wait. It can take upto a minute or two to connect to our servers.")
+  }, [])
   useEffect(() => {
     setModal(isSignUp);
   }, [isSignUp]);
   useEffect(() => {
     setModal(isLogIn);
   }, [isLogIn]);
-  useEffect(()=>{
-    console.log(showBookmarks)
-  }, [showBookmarks])
 
   return (
     <div className="homepage">
@@ -57,6 +61,7 @@ export default function WebHomePage() {
         <AddStory closeStory={setAddStory}/>
       </ReactModal>
       <Categories showBookmarks={showBookmarks} />
+      <Toaster />
     </div>
   );
 }

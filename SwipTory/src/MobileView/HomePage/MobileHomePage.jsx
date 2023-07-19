@@ -5,8 +5,10 @@ import ReactModal from "react-modal";
 import Form from "./Components/Form";
 import AddStory from "./Components/AddStory";
 import Categories from "./Components/Categories";
+import { Toaster, toast } from "react-hot-toast";
 import "./MobileHomePage.css";
 ReactModal.setAppElement("#root");
+
 
 export default function MobileHomePage() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -15,6 +17,12 @@ export default function MobileHomePage() {
   const [addStory, setAddStory] = useState(false);
   const [yourStory, setYourStory] = useState(false);
   const [showBookmarks, setShowBookmarks] = useState(false);
+  const notify = (message) => toast(message, {
+    duration: 5000
+  });
+  useEffect(()=>{
+    notify("Please wait. It can take upto a minute or two to connect to our servers.")
+  }, [])
   useEffect(() => {
     setModal(isSignUp);
   }, [isSignUp]);
@@ -58,6 +66,7 @@ export default function MobileHomePage() {
         <AddStory closeStory={setAddStory} />
       </ReactModal>
       <Categories showBookmarks={showBookmarks} yourStory={yourStory} />
+      <Toaster />
     </div>
   );
 }
