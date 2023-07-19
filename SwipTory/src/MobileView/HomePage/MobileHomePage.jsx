@@ -16,20 +16,6 @@ export default function MobileHomePage() {
   const [addStory, setAddStory] = useState(false);
   const [yourStory, setYourStory] = useState(false);
   const [showBookmarks, setShowBookmarks] = useState(false);
-
-  useEffect(()=>{
-    if ('Notification' in window) {
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          const notification = new Notification('Hello!', {
-            body: "It can take upto a minute to connect to our servers. Please hang on tight."
-          });
-        } else {
-          console.log('Permission for notifications denied');
-        }
-      });
-    }
-  }, [])
   
   useEffect(() => {
     setModal(isSignUp);
