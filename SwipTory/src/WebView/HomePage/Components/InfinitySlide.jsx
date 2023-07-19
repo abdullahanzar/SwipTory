@@ -181,11 +181,23 @@ export default function InfinitySlide(props) {
           className="shareSlide"
           onClick={() => {
             const baseURL = window.location.origin;
-            (async () =>
-              navigator.clipboard.writeText(
-                `${baseURL}/?infinitySlide=true&storyID=${currentSlide.storyID}`
-              ))();
+            (async () => {
+            try {
+              if(navigator.clipboard) {
+                await navigator.clipboard.writeText(
+                  `${baseURL}/?infinitySlide=true&storyID=${currentSlide.storyID}`
+                )
                 notify("Story copied to the clipboard. Share it. ;-)");
+              }
+              else 
+              {
+                notify("Can't access your clipboard.")
+                return;
+              }
+            }
+            catch(e) {
+              console.log(e)
+            }})();
           }}
         >
           <img src={shareSlide} />
