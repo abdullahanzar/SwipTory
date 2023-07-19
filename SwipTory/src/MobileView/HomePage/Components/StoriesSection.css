@@ -39,6 +39,7 @@
   font-size: 19px;
   padding: 0.3rem;
   z-index: 3;
+  margin: 0.3rem;
 }
 .story img {
   position: absolute;

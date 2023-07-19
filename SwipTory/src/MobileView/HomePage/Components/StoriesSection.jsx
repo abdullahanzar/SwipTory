@@ -161,7 +161,6 @@ function showAllStories(
     if (key !== 0)
       return (
         <div className="storybycategory" key={key}>
-          <p>Top stories about {item[0]}</p>
           <div>
             {uniqueStories?.map((story, key) => {
               if (story.category == item[0])
