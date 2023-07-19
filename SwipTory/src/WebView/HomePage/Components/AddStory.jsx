@@ -180,7 +180,7 @@ export default function AddStory(props) {
         </button>
         {status[0] === "true" && <div className="loader"></div>}
         {status[0] === "error" && (
-          <div className="error">Your form is incomplete.</div>
+          <div className="error">Your form is incomplete. Checked, Not working? Try logging in again.</div>
         )}
         {status[0] === "minbreach" && (
           <div className="error">Min 3 slides required.</div>

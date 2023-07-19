@@ -118,9 +118,9 @@
 }
 
 .error {
-  width: fit-content;
+  width: 45%;
   position: absolute;
-  left: 45%;
-  top: 30%;
+  left: 42%;
+  top: 10%;
   color: red;
 }
