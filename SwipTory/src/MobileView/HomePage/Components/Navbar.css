@@ -1,0 +1,93 @@
+.navbar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 3rem;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  align-items: center;
+}
+
+.navbar p {
+  font-weight: 600;
+  font-size: 1.1em;
+  margin-left: 5%;
+}
+
+.navbar img {
+  scale: 0.5;
+  margin-right: 5%;
+}
+
+.showmore {
+  width: 100%;
+  height: 30rem;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 3rem;
+  background-color: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  z-index: 9;
+}
+
+.buttons {
+  position: relative;
+  width: 100%;
+  height: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttons button {
+  width: 8rem;
+  height: 3rem;
+  margin: 3rem;
+  border-radius: 20px;
+  background: #ff7373;
+  border: none;
+  font-size: 1em;
+  color: #fff;
+}
+
+.buttonsLI {
+  position: relative;
+  width: 100%;
+  height: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonsLI button {
+  width: 8rem;
+  height: 3rem;
+  margin: 1.5rem;
+  border-radius: 20px;
+  background: #ff7373;
+  border: none;
+  font-size: 1em;
+  color: #fff;
+}
+
+.buttonsLI img {
+  width: 3rem;
+  height: 3rem;
+}
+
+.buttonsLI div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.exit {
+  position: absolute;
+  right: 9%;
+  font-size: 1.5rem;
+}

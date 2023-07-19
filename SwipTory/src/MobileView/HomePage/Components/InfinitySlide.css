@@ -1,0 +1,167 @@
+.infinitySlides {
+    color: #fff;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .slide {
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+  
+  .slide p {
+    font-size: 1.5rem;
+    position: absolute;
+    bottom: 10%;
+    padding: 1rem;
+    z-index: 2;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.65) 58.26%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+  
+  .slide p span {
+    font-size: 1rem;
+  }
+  
+  .slide img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: brightness(0.5);
+    border: none;
+    object-fit: cover;
+    z-index: 1;
+  }
+  
+  .slider {
+    position: absolute;
+    right: 1%;
+    width: 98%;
+    height: 10px;
+    background-color: rgba(109, 108, 108, 0.65);
+    border-radius: 12px;
+    z-index: 2;
+  }
+  
+  .sliding {
+    height: 100%;
+    background-color: rgba(37, 37, 37, 0.797);
+    border-radius: 10px;
+    animation: progress-animation 3.7s infinite;
+  }
+  
+  @keyframes progress-animation {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  .leftslider {
+      position: absolute;
+      top: 40%;
+      right: 150%;
+  }
+  
+  .leftslider:hover {
+      background: rgba(109, 108, 108, 0.65);
+      border-radius: 50%;
+      cursor: pointer;
+  }
+  
+  .rightslider {
+      position: absolute;
+      top: 40%;
+      left: 150%;
+  }
+  
+  .rightslider:hover {
+      background: rgba(109, 108, 108, 0.65);
+      border-radius: 50%;
+      cursor: pointer;
+  }
+  
+  .bookmark {
+      scale: 0.75;
+      position: absolute;
+      bottom: 2%;
+      z-index: 3;
+      left: 10%;
+      cursor: pointer;
+  }
+  
+  .bookmark:hover {
+      background: rgba(109, 108, 108, 0.65);
+      border-radius: 50%;
+      cursor: pointer;
+  }
+  
+  .likes {
+      position: absolute;
+      scale: 0.75;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      bottom: 2.5%;
+      z-index: 3;
+      right: 10%;
+      cursor: pointer;
+  }
+  
+  .likes img {
+      width: 40px;
+      height: 40px;
+  }
+  
+  .likes p {
+      margin-left: 1rem;
+      font-size: 2rem;
+  }
+  
+  .shareSlide {
+    position: absolute;
+    top: 1rem;
+    z-index: 3;
+    right: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .shareSlide img {
+    scale: 0.70;
+  }
+  
+  .shareSlide:hover {
+    background: rgba(109, 108, 108, 0.65);
+    border-radius: 50%;
+  }
+  
+  .exit {
+    position: absolute;
+    top: 1.5rem;
+    right: 88%;
+    z-index: 3;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .exit img {
+    scale: 0.6;
+  }
+  
+  .exit:hover {
+    background: rgba(109, 108, 108, 0.65);
+    border-radius: 50%;
+  }
