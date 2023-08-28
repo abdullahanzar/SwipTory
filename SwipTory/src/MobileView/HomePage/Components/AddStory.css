@@ -1,3 +1,4 @@
+@media (max-width: 767px) {
 .ADDSTORYY {
   width: 100%;
   height: 100%;
@@ -132,4 +133,5 @@
   color: red;
   font-size: 0.85rem;
   width: 60%;
+}
 }

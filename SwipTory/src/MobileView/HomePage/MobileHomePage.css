@@ -1,3 +1,4 @@
+@media (max-width: 767px) {
 :root {
   width: 100%;
   height: max-content;
@@ -47,4 +48,5 @@ body {
   border-radius: 20px;
   background: #fff;
   box-shadow: 0px 4px 30px 0px rgba(255, 255, 255, 0.25);
+}
 }

@@ -1,3 +1,4 @@
+@media (min-width:767px) {
 .homepage {
   width: 100%;
   height: 100%;
@@ -35,4 +36,5 @@
   border-radius: 20px;
   background: #fff;
   box-shadow: 0px 4px 30px 0px rgba(255, 255, 255, 0.25);
+}
 }

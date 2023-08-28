@@ -10,8 +10,13 @@ const MobBookmarks = lazy(()=>import("./MobileView/BookmarkPage/MobBookmarks"));
 import './App.css'
 
 function App() {
-  const isMobile = checkMobile();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [isLoading, setIsLoading] = useState(true);
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  }
+  const [isMobile, setIsMobile] = useState(checkMobile(windowWidth));
   useEffect(() => {
     if (localStorage.getItem("token") == null) return setIsLoggedIn(false);
     const check = async () => {
@@ -34,8 +39,29 @@ function App() {
     };
     check();
   }, []);
+  useEffect(()=>{
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [])
+  useEffect(()=>{
+    setIsMobile(checkMobile(windowWidth));
+  }, [windowWidth])
+  useEffect(()=>{
+    (async () => {
+      const response = await axios.get("https://swiptory.onrender.com/");
+      if(response?.data)
+      setIsLoading(false);
+      else 
+      setIsLoading(true);
+    })();
+  }, [])
   return (
     <SwipToryContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+      {isLoading && <div className="initial-load">
+        <span className="Mloader"></span>
+        <span>Fetching Stories, please wait.</span>
+        </div>}
       {isMobile ? (
         <Suspense fallback={<div>Loading...</div>}>
         <BrowserRouter>
@@ -59,11 +85,8 @@ function App() {
   );
 }
 
-function checkMobile() {
-  if (
-    window.navigator.userAgent.includes("Windows") ||
-    window.navigator.userAgent.includes("Mac")
-  )
+function checkMobile(windowWidth) {
+  if (windowWidth>767)
     return false;
   else return true;
 }

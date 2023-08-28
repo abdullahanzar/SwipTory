@@ -1,3 +1,4 @@
+@media (min-width:767px) {
 .navbar {
   width: 100%;
   height: 3.5rem;
@@ -103,4 +104,5 @@
 
 .usercontrols button:hover {
   background: #73abff;
+}
 }

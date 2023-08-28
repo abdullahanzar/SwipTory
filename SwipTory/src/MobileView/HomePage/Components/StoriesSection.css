@@ -1,3 +1,4 @@
+@media (max-width: 767px) {
 .storiessection {
   width: 100%;
   height: max-content;
@@ -112,4 +113,5 @@
   scale: 0.5;
   position: relative;
   margin: 0px;
+}
 }
