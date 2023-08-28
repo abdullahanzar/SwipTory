@@ -86,7 +86,7 @@ function App() {
 }
 
 function checkMobile(windowWidth) {
-  if (windowWidth>767)
+  if (windowWidth>=768) //rest is handled by media queries
     return false;
   else return true;
 }
